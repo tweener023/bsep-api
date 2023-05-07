@@ -10,7 +10,7 @@ import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
-import BoardModerator from "./components/board-moderator.component";
+import BoardEngineer from "./components/board-engineer.component";
 import BoardAdmin from "./components/board-admin.component";
 
 // import AuthVerify from "./common/auth-verify";
@@ -34,7 +34,7 @@ class App extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+        showEngineerBoard: user.roles.includes("ROLE_ENGINEER"),
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
@@ -51,14 +51,14 @@ class App extends Component {
   logOut() {
     AuthService.logout();
     this.setState({
-      showModeratorBoard: false,
+      showEngineerBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
     });
   }
 
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser, showEngineerBoard, showAdminBoard } = this.state;
 
     return (
       <div>
@@ -73,10 +73,10 @@ class App extends Component {
               </Link>
             </li>
 
-            {showModeratorBoard && (
+            {showEngineerBoard && (
               <li className="nav-item">
-                <Link to={"/mod"} className="nav-link">
-                  Moderator Board
+                <Link to={"/engineer"} className="nav-link">
+                  Engineer Board
                 </Link>
               </li>
             )}
@@ -136,7 +136,7 @@ class App extends Component {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/user" element={<BoardUser />} />
-            <Route path="/mod" element={<BoardModerator />} />
+            <Route path="/engineer" element={<BoardEngineer />} />
             <Route path="/admin" element={<BoardAdmin />} />
           </Routes>
         </div>
