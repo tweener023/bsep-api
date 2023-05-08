@@ -65,11 +65,26 @@ public class AuthController {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(new JwtResponse(jwt, 
-												 userDetails.getId(), 
-												 userDetails.getUsername(), 
-												 userDetails.getEmail(), 
-												 roles));
+
+		if (userDetails.getApproved()){
+
+			return ResponseEntity.ok(new JwtResponse(jwt,
+					userDetails.getId(),
+					userDetails.getUsername(),
+					userDetails.getEmail(),
+					userDetails.getFirstName(),
+					userDetails.getLastName(),
+					userDetails.getAddress(),
+					userDetails.getCity(),
+					userDetails.getCountry(),
+					userDetails.getPhoneNumber(),
+					userDetails.getTitle(),
+					userDetails.getApproved(),
+					roles));
+		}
+		else return ResponseEntity
+				.badRequest()
+				.body(new MessageResponse("Profile needs to be approved by admin!"));
 	}
 
 	@PostMapping("/signup")
@@ -89,7 +104,16 @@ public class AuthController {
 		// Create new user's account
 		User user = new User(signUpRequest.getUsername(), 
 							 signUpRequest.getEmail(),
-							 encoder.encode(signUpRequest.getPassword()));
+							 encoder.encode(signUpRequest.getPassword()),
+							signUpRequest.getFirstName(),
+							signUpRequest.getLastName(),
+							signUpRequest.getAddress(),
+							signUpRequest.getCity(),
+							signUpRequest.getCountry(),
+							signUpRequest.getPhoneNumber(),
+							signUpRequest.getTitle(),
+							signUpRequest.getApproved()
+				);
 
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();

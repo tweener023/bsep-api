@@ -15,7 +15,7 @@ export default class Profile extends Component {
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-
+    console.log(currentUser);
     if (!currentUser) this.setState({ redirect: "/home" });
     this.setState({ currentUser: currentUser, userReady: true })
   }
@@ -48,6 +48,38 @@ export default class Profile extends Component {
         <p>
           <strong>Email:</strong>{" "}
           {currentUser.email}
+        </p>
+        <p>
+          <strong> First name:</strong>{" "}
+          {currentUser.firstName}
+        </p>
+        <p>
+          <strong>Last name:</strong>{" "}
+          {currentUser.lastName}
+        </p>
+        <p>
+          <strong> Address:</strong>{" "}
+          {currentUser.address}
+        </p>
+        <p>
+          <strong>City:</strong>{" "}
+          {currentUser.city}
+        </p>
+        <p>
+          <strong>Country:</strong>{" "}
+          {currentUser.country}
+        </p>
+        <p>
+          <strong>Phone number:</strong>{" "}
+          {currentUser.phoneNumber}
+        </p>
+        <p>
+          <strong>Title:</strong>{" "}
+          {currentUser.title}
+        </p>
+        <p>
+          <strong>Profile activated:</strong>{" "}
+          {currentUser.approved.toString()}
         </p>
         <strong>Authorities:</strong>
         <ul>

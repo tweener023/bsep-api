@@ -24,15 +24,41 @@ public class UserDetailsImpl implements UserDetails {
 	@JsonIgnore
 	private String password;
 
+	private String firstName;
+
+	private String lastName;
+
+	private String address;
+
+	private String city;
+
+	private String country;
+
+	private String phoneNumber;
+
+	private String title;
+
+	private Boolean isApproved;
+
+
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public UserDetailsImpl(Long id, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Collection<? extends GrantedAuthority> authorities, String firstName, String lastName,
+						   String address, String city, String country, String phoneNumber, String title, Boolean isApproved) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.city = city;
+		this.country = country;
+		this.phoneNumber = phoneNumber;
+		this.title = title;
+		this.isApproved = isApproved;
 	}
 
 	public static UserDetailsImpl build(User user) {
@@ -45,7 +71,16 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUsername(), 
 				user.getEmail(),
 				user.getPassword(), 
-				authorities);
+				authorities,
+				user.getFirstName(),
+				user.getLastName(),
+				user.getAddress(),
+				user.getCity(),
+				user.getCountry(),
+				user.getPhoneNumber(),
+				user.getTitle(),
+				user.getApproved()
+				);
 	}
 
 	@Override
@@ -89,6 +124,70 @@ public class UserDetailsImpl implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Boolean getApproved() {
+		return isApproved;
+	}
+
+	public void setApproved(Boolean approved) {
+		isApproved = approved;
 	}
 
 	@Override

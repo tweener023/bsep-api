@@ -32,6 +32,38 @@ public class User {
 	@Size(max = 120)
 	private String password;
 
+	@NotBlank
+	@Size(max = 50)
+	private String firstName;
+
+	@NotBlank
+	@Size(max = 50)
+	private String lastName;
+
+	@NotBlank
+	@Size(max = 150)
+	private String address;
+
+	@NotBlank
+	@Size(max = 50)
+	private String city;
+
+	@NotBlank
+	@Size(max = 50)
+	private String country;
+
+	@NotBlank
+	@Size(max = 50)
+	private String phoneNumber;
+
+	@NotBlank
+	@Size(max = 50)
+	private String title;
+
+	@NotBlank
+	private Boolean isApproved;
+
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
 				joinColumns = @JoinColumn(name = "user_id"), 
@@ -41,10 +73,18 @@ public class User {
 	public User() {
 	}
 
-	public User(String username, String email, String password) {
+	public User(String username, String email, String password, String firstName, String lastName, String address, String city, String country, String phoneNumber, String title, Boolean isApproved) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.city = city;
+		this.country = country;
+		this.phoneNumber = phoneNumber;
+		this.title = title;
+		this.isApproved = isApproved;
 	}
 
 	public Long getId() {
@@ -85,5 +125,69 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String name) {
+		this.firstName = name;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Boolean getApproved() {
+		return isApproved;
+	}
+
+	public void setApproved(Boolean approved) {
+		isApproved = approved;
 	}
 }
