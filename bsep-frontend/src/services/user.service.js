@@ -19,6 +19,17 @@ class UserService {
   getAdminBoard() {
     return axios.get(API_URL + 'admin', { headers: authHeader() });
   }
+
+  getUnactivatedProfiles(){
+    return axios.get(API_URL + 'unactivated', {headers: authHeader()});
+  }
+
+  activateProfile(profileId, token){
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+    return axios.put(API_URL + profileId +'/activate', {headers});
+  }
 }
 
 export default new UserService();

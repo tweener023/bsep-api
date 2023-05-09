@@ -60,7 +60,6 @@ public class User {
 	@Size(max = 50)
 	private String title;
 
-	@NotBlank
 	private Boolean isApproved;
 
 
