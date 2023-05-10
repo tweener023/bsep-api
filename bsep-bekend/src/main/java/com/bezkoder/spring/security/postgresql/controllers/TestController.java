@@ -49,6 +49,7 @@ public class TestController {
 	}
 
 	@PutMapping("/{profileId}/activate")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDTO> activateUser(@PathVariable("profileId") String profileId) {
 
 		// a user must exist
@@ -60,17 +61,7 @@ public class TestController {
 		}
 
 		user.setApproved(true);
-		System.out.print("-------------------------------------------------------");
 
-		System.out.print("-------------------------------------------------------");
-
-
-		System.out.print("Userov Approved je " +  user.getApproved());
-		System.out.print("Userovo ime je " +  user.getUsername());
-
-		System.out.print("-------------------------------------------------------");
-
-		System.out.print("-------------------------------------------------------");
 		user = userService.save(user);
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
@@ -85,7 +76,7 @@ public class TestController {
 		// convert users to DTOs
 		List<UserDTO> usersDTO = new ArrayList<>();
 		for (User u : users) {
-			if(!u.getApproved()){
+			if((u.getApproved() == null) ||(u.getApproved() == false) ){
 				usersDTO.add(new UserDTO(u));
 			}
 		}

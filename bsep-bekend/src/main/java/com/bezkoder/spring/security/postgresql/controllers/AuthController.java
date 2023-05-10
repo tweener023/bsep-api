@@ -66,7 +66,7 @@ public class AuthController {
 				.collect(Collectors.toList());
 
 
-		if (userDetails.getApproved()){
+		if ((userDetails.getApproved() != null) && (userDetails.getApproved() != false)){
 
 			return ResponseEntity.ok(new JwtResponse(jwt,
 					userDetails.getId(),

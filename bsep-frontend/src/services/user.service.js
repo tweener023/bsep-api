@@ -25,10 +25,11 @@ class UserService {
   }
 
   activateProfile(profileId, token){
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
-    return axios.put(API_URL + profileId +'/activate', {headers});
+    //const headers = {
+    //  Authorization: `Bearer ${token}`
+    //};
+   //console.log("User is " + token);
+    return axios.put(API_URL + profileId +'/activate', {headers:authHeader()});
   }
 }
 

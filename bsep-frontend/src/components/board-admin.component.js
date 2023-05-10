@@ -52,7 +52,8 @@ export default class BoardAdmin extends Component {
   activateProfile(profile) {
     const currentUser = AuthService.getCurrentUser();
 
-    UserService.activateProfile(profile.id, currentUser.token).then(
+   // console.log("user je " + JSON.stringify(currentUser));
+    UserService.activateProfile(profile.id, currentUser.accessToken).then(
       (response) => {
         // remove the activated profile from the state
         const updatedProfiles = this.state.unactivatedProfiles.filter(
