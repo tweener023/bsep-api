@@ -31,6 +31,15 @@ class UserService {
    //console.log("User is " + token);
     return axios.put(API_URL + profileId +'/activate', {headers:authHeader()});
   }
+
+  
+  getEngineerSkills(profileId, token){
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+    return axios.get(API_URL + profileId + '/skill', {headers});
+  }
+
 }
 
 export default new UserService();

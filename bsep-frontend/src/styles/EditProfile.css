@@ -1,0 +1,57 @@
+.info-card{
+    margin-top: 5%;
+    margin-left: 5%;
+    background-color: cadetblue;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.usernameH3{
+    margin-left: 3%;
+}
+
+.btnSave {
+    margin-top: 5px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .btnCancel {
+    margin-top: 5px;
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btnChange {
+    position: center;
+    margin-top: 5px;
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-left: 5%;
+   
+  }
+  
+
+  .button-container {
+    text-align: center;
+    display: flex;
+  justify-content: center;
+  }
+  

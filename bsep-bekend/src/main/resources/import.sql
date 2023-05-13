@@ -29,3 +29,11 @@ insert into user_roles(user_id,role_id) values (5,1);
 insert into user_roles(user_id,role_id) values (6,1);
 insert into user_roles(user_id,role_id) values (7,1);
 
+
+insert into skills ( skill_name,skill_level ) values ('Java Spring Boot', '1');
+insert into skills ( skill_name,skill_level ) values ('React Native', '2');
+insert into skills ( skill_name,skill_level ) values ('React', '3');
+
+insert into user_skills(user_id, skill_id) values (2,1);
+insert into user_skills(user_id, skill_id) values (2,2);
+insert into user_skills(user_id, skill_id) values (2,3);

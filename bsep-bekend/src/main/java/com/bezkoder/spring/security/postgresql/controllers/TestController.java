@@ -1,6 +1,8 @@
 package com.bezkoder.spring.security.postgresql.controllers;
 
+import com.bezkoder.spring.security.postgresql.dtos.SkillDTO;
 import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
+import com.bezkoder.spring.security.postgresql.models.Skill;
 import com.bezkoder.spring.security.postgresql.models.User;
 import com.bezkoder.spring.security.postgresql.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -67,7 +70,7 @@ public class TestController {
 	}
 
 
-
+	//ne diraj
 	@GetMapping(value = "/unactivated")
 	public ResponseEntity<List<UserDTO>> getUnactivatedUsers() {
 
@@ -84,4 +87,29 @@ public class TestController {
 		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
+
+	@GetMapping("/{profileId}/skill")
+	public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable("profileId") String profileId) {
+
+		// a user must exist
+		Long id = Long.parseLong(profileId);
+		User user = userService.findOne(id);
+
+		Set<Skill> skills = user.getSkills();
+
+		List<SkillDTO> skillDTO = new ArrayList<>();
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		for (Skill e : skills) {
+			SkillDTO appointmentDTO = new SkillDTO();
+			appointmentDTO.setSkillId(e.getSkillId());
+			appointmentDTO.setSkillName(e.getSkillName());
+			appointmentDTO.setSkillLevel(e.getSkillLevel());
+
+			skillDTO.add(appointmentDTO);
+		}
+		return new ResponseEntity<>(skillDTO, HttpStatus.OK);
+	}
 }
