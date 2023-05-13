@@ -1,82 +1,81 @@
 .container {
-    margin-top: 30px;
-  }
-  
-  .jumbotron {
-    background-color: #f8f9fa;
-    padding: 2rem 1rem;
-    border-radius: 0.3rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  }
-  
-  .card {
-    margin-bottom: 20px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border: none;
-  }
-  
-  .card-header {
-    background-color: #f8f9fa;
-    border-bottom: none;
-    display: flex;
-    align-items: center;
-  }
-  
-  .card-header h5 {
-    margin-bottom: 0;
-    margin-right: auto;
-  }
-  
-  .card-body {
-    padding: 1rem;
-  }
-  
-  .card-footer {
-    border-top: none;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-  
-  .btn-add {
-    margin-bottom: 20px;
-  }
-  
-  .btn-edit {
-    background-color: #007bff;
-    border: none;
-    color: #fff;
-  }
-  
-  .btn-edit:hover {
-    background-color: #0069d9;
-    color: #fff;
-  }
-  
-  .btn-delete {
-    background-color: #dc3545;
-    border: none;
-    color: #fff;
-    margin-left: 10px;
-  }
-  
-  .btn-delete:hover {
-    background-color: #c82333;
-    color: #fff;
-  }
-  
-  .btn-add-skill {
-    background-color: #28a745;
-    border: none;
-    color: #fff;
-  }
-  
-  .btn-add-skill:hover {
-    background-color: #218838;
-    color: #fff;
-  }
-  
-  .alert {
-    margin-top: 20px;
-  }
-  
+  margin-top: 30px;
+}
+
+.jumbotron {
+  background-color: #f8f9fa;
+  padding: 2rem 1rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card {
+  margin-bottom: 20px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+}
+
+.card-header h5 {
+  margin-bottom: 0;
+  margin-right: auto;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-footer {
+  border-top: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn-add {
+  margin-bottom: 20px;
+}
+
+.btn-edit {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background-color: #0069d9;
+  color: #fff;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  border: none;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+  color: #fff;
+}
+
+.btn-add-skill {
+  background-color: #28a745;
+  border: none;
+  color: #fff;
+}
+
+.btn-add-skill:hover {
+  background-color: #218838;
+  color: #fff;
+}
+
+.alert {
+  margin-top: 20px;
+}

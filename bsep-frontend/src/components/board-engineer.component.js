@@ -2,15 +2,23 @@ import React, { Component } from "react";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import AuthService from "../services/auth.service";
+import "../styles/Engineer.css";
 
+
+  
 export default class BoardEngineer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       skills: [],
-      error: null
+      loading: true,
+      content: "",
     };
+
+    this.handleAddSkill = this.handleAddSkill.bind(this);
+    this.handleEditSkill = this.handleEditSkill.bind(this);
+    this.handleDeleteSkill = this.handleDeleteSkill.bind(this);
   }
 
   componentDidMount() {
@@ -24,7 +32,8 @@ export default class BoardEngineer extends Component {
       (response) => {
         this.setState({
           skills: response.data,
-          error: null
+          error: null, 
+          loading:false,
         });
       },
       (error) => {
@@ -33,7 +42,8 @@ export default class BoardEngineer extends Component {
           error:
             (error.response && error.response.data) ||
             error.message ||
-            error.toString()
+            error.toString(),
+            loading: false,
         });
 
         if (error.response && error.response.status === 401) {
@@ -42,26 +52,58 @@ export default class BoardEngineer extends Component {
       }
     );
   }
+  handleAddSkill() {
+    // TODO: implement add skill functionality
+    console.log("Add skill clicked");
+  }
+
+  handleEditSkill(skillId) {
+    // TODO: implement edit skill functionality
+    console.log(`Edit skill ${skillId} clicked`);
+  }
+
+  handleDeleteSkill(skillId) {
+    // TODO: implement delete skill functionality
+    console.log(`Delete skill ${skillId} clicked`);
+  }
+
   render() {
-    const { skills, error } = this.state;
-  
+    const { skills, loading, content } = this.state;
+
     return (
       <div className="container">
-        <header className="jumbotron">
-          {error ? (
-            <div className="alert alert-danger" role="alert">
-              Error: {error.message}
-            </div>
-          ) : (
-            <ul>
+        <h1 className="head">Skills</h1>
+        {loading && <p>Loading skills...</p>}
+        {content && <p>{content}</p>}
+        {!loading && !content && (
+          <>
+            <div className="card-group">
               {skills.map((skill) => (
-                <li key={skill.skillId}>
-                  {skill.skillName} - Level {skill.skillLevel}
-                </li>
+                <div className="card" key={skill.skillId}>
+                  <div className="card-body">
+                    <h5 className="card-title">{skill.skillName}</h5>
+                    <p className="card-text">Skill level: {skill.skillLevel}</p>
+                    <button
+                      className="btn btn-primary mr-2"
+                      onClick={() => this.handleEditSkill(skill.skillId)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => this.handleDeleteSkill(skill.skillId)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
               ))}
-            </ul>
-          )}
-        </header>
+            </div>
+            <button className="btn btn-success mt-2" onClick={this.handleAddSkill}>
+              Add Skill
+            </button>
+          </>
+        )}
       </div>
     );
   }
