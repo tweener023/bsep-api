@@ -30,16 +30,16 @@ insert into user_roles(user_id,role_id) values (6,1);
 insert into user_roles(user_id,role_id) values (7,1);
 
 
-insert into skills ( skill_name,skill_level ) values ('Java Spring Boot', '1');
-insert into skills ( skill_name,skill_level ) values ('React Native', '2');
-insert into skills ( skill_name,skill_level ) values ('React', '3');
-insert into skills ( skill_name,skill_level ) values ('Spring Security', '4');
-insert into skills ( skill_name,skill_level ) values ('C#', '2');
+insert into skills ( skill_name,skill_level, user_id ) values ('Java Spring Boot', '1', '2');
+insert into skills ( skill_name,skill_level, user_id) values ('React Native', '2', '2');
+insert into skills ( skill_name,skill_level, user_id) values ('React', '3','2');
+insert into skills ( skill_name,skill_level, user_id) values ('Spring Security', '4','2');
+insert into skills ( skill_name,skill_level, user_id) values ('C#', '2','2');
 
 
 
-insert into user_skills(user_id, skill_id) values (2,1);
-insert into user_skills(user_id, skill_id) values (2,2);
-insert into user_skills(user_id, skill_id) values (2,3);
-insert into user_skills(user_id, skill_id) values (2,4);
-insert into user_skills(user_id, skill_id) values (2,5);
+--insert into user_skills(user_id, skill_id) values (2,1);
+--insert into user_skills(user_id, skill_id) values (2,2);
+--insert into user_skills(user_id, skill_id) values (2,3);
+--insert into user_skills(user_id, skill_id) values (2,4);
+--insert into user_skills(user_id, skill_id) values (2,5);

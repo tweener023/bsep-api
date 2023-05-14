@@ -6,6 +6,7 @@ public class SkillDTO {
     private Long skillId;
     private String skillName;
     private String skillLevel;
+    private UserDTO user;
 
     public SkillDTO(){
 
@@ -37,5 +38,13 @@ public class SkillDTO {
 
     public void setSkillLevel(String skillLevel) {
         this.skillLevel = skillLevel;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }

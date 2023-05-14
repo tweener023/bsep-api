@@ -87,7 +87,7 @@ public class TestController {
 		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
 
-
+/*
 	@GetMapping("/{profileId}/skill")
 	public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable("profileId") String profileId) {
 
@@ -112,4 +112,24 @@ public class TestController {
 		}
 		return new ResponseEntity<>(skillDTO, HttpStatus.OK);
 	}
+*/
+@GetMapping(value = "/{userId}/skill")
+public ResponseEntity<List<SkillDTO>> getUserAppointments(@PathVariable String userId) {
+	Long id = Long.parseLong(userId);
+	User user = userService.findOne(id);
+	Set<Skill> appointments = user.getSkills();
+	List<SkillDTO> skillsDTO = new ArrayList<>();
+	for (Skill e : appointments) {
+		SkillDTO appointmentDTO = new SkillDTO();
+		appointmentDTO.setSkillLevel(e.getSkillLevel());
+		appointmentDTO.setUser(new UserDTO(e.getUser()));
+		appointmentDTO.setSkillName(e.getSkillName());
+
+		skillsDTO.add(appointmentDTO);
+	}
+	return new ResponseEntity<>(skillsDTO, HttpStatus.OK);
+}
+
+
+
 }

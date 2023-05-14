@@ -62,17 +62,14 @@ public class User {
 
 	private Boolean isApproved;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(	name = "user_skills",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "skill_id"))
-	private Set<Skill> skills = new HashSet<>();
-
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
 				joinColumns = @JoinColumn(name = "user_id"), 
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Skill> skills = new HashSet<Skill>();
 
 	public User() {
 	}
@@ -200,6 +197,6 @@ public class User {
 	}
 
 	public void setSkills(Set<Skill> skills) {
-		this.skills = skills;
+		this.skills= skills;
 	}
 }

@@ -19,6 +19,9 @@ public class Skill {
     private String skillLevel;
 
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private User user;
+
     public Long getSkillId() {
         return id;
     }
@@ -42,4 +45,13 @@ public class Skill {
     public void setSkillLevel(String skillLevel) {
         this.skillLevel = skillLevel;
     }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User userId) {
+        this.user = userId;
+    }
+
+
 }
