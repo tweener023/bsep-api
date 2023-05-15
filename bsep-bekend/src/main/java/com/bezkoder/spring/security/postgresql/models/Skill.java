@@ -1,9 +1,9 @@
 package com.bezkoder.spring.security.postgresql.models;
 
+import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "skills")

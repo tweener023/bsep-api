@@ -155,4 +155,28 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
 	}
 
+
+
+
+	@PutMapping("/{skillId}/editSkill")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<SkillDTO> updateSkill(@PathVariable("skillId") String skillId, @RequestBody SkillDTO skillRequest) {
+
+		// a skill must exist
+		Long id = Long.parseLong(skillId);
+		Skill skill = skillService.findOne(id);
+
+		if (skill == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		skill.setSkillName(skillRequest.getSkillName());
+		skill.setSkillLevel(skillRequest.getSkillLevel());
+		skill.setIsDeleted(false);
+		
+		skill = skillService.save(skill);
+
+		return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
+	}
+
 }

@@ -1,5 +1,7 @@
 package com.bezkoder.spring.security.postgresql.models;
 
+import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -86,6 +88,20 @@ public class User {
 		this.phoneNumber = phoneNumber;
 		this.title = title;
 		this.isApproved = isApproved;
+	}
+
+	public User(UserDTO user) {
+		this.username = user.getUsername();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.address = user.getAddress();
+		this.city = user.getCity();
+		this.country = user.getCountry();
+		this.phoneNumber = user.getPhoneNumber();
+		this.title = user.getTitle();
+		this.isApproved = user.getApproved();
 	}
 
 	public Long getId() {
