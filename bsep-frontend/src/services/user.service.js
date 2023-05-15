@@ -43,6 +43,11 @@ class UserService {
   deleteSkill(skillId){
     return axios.put(API_URL + skillId + '/deleteSkill', {headers: authHeader()});
   }
+
+  updateSkill(skillId, updatedSkill){
+    console.log(updatedSkill);
+    return axios.put(API_URL + skillId + '/editSkill', updatedSkill,{headers: authHeader()});
+  }
 }
 
 export default new UserService();

@@ -12,10 +12,8 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String skillName;
 
-    @NotBlank
     private String skillLevel;
 
     private Boolean isDeleted;

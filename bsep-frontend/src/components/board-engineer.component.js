@@ -4,8 +4,6 @@ import EventBus from "../common/EventBus";
 import AuthService from "../services/auth.service";
 import "../styles/Engineer.css";
 
-
-  
 export default class BoardEngineer extends Component {
   constructor(props) {
     super(props);
@@ -14,26 +12,34 @@ export default class BoardEngineer extends Component {
       skills: [],
       loading: true,
       content: "",
+      newSkillName: "", // New skill name input field
+      newSkillLevel: "", // New skill level input field
     };
 
     this.handleAddSkill = this.handleAddSkill.bind(this);
     this.handleEditSkill = this.handleEditSkill.bind(this);
     this.handleDeleteSkill = this.handleDeleteSkill.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleOpenEditDialog = this.handleOpenEditDialog.bind(this);
+    this.handleCloseEditDialog = this.handleCloseEditDialog.bind(this);
+
   }
 
   componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutsideDialog);
+
     const currentUser = AuthService.getCurrentUser();
 
     console.log(JSON.stringify(currentUser));
-    const  profileId  = currentUser.id;
+    const profileId = currentUser.id;
     console.log(JSON.stringify(profileId));
 
     UserService.getEngineerSkills(profileId, currentUser.accessToken).then(
       (response) => {
         this.setState({
           skills: response.data,
-          error: null, 
-          loading:false,
+          error: null,
+          loading: false,
         });
       },
       (error) => {
@@ -43,7 +49,7 @@ export default class BoardEngineer extends Component {
             (error.response && error.response.data) ||
             error.message ||
             error.toString(),
-            loading: false,
+          loading: false,
         });
 
         if (error.response && error.response.status === 401) {
@@ -56,31 +62,99 @@ export default class BoardEngineer extends Component {
     // TODO: implement add skill functionality
     console.log("Add skill clicked");
   }
+  
+componentWillUnmount() {
+  document.removeEventListener('mousedown', this.handleClickOutsideDialog);
+}
+
+handleClickOutsideDialog = (event) => {
+  const dialog = document.querySelector('.dialog-card');
+  if (dialog && !dialog.contains(event.target)) {
+    this.handleCloseEditDialog();
+  }
+};
 
   handleEditSkill(skillId) {
-    // TODO: implement edit skill functionality
-    console.log(`Edit skill ${skillId} clicked`);
+    const currentUser = AuthService.getCurrentUser();
+    const { newSkillName, newSkillLevel } = this.state;
+
+    if (!newSkillName || !newSkillLevel) {
+      // Display an error message or take appropriate action
+      console.log("Please provide both a new skill name and skill level.");
+      return;
+    }
+  
+    const updatedSkill = {
+      skillName: newSkillName,
+      skillLevel: newSkillLevel,
+      user: currentUser,
+      skillId: skillId
+    };
+  
+    UserService.updateSkill(skillId, updatedSkill)
+      .then((response) => {
+        // Handle successful update
+        console.log("Skill updated successfully:", response.data);
+        // Update the skills list if needed
+        this.setState((prevState) => ({
+          skills: prevState.skills.map((skill) =>
+            skill.skillId === skillId ? { ...skill, ...updatedSkill } : skill
+          ),
+          editingSkillId: null,
+          newSkillName: "",
+          newSkillLevel: "",
+        }));
+      })
+      .catch((error) => {
+        // Handle error
+        console.log("Error updating skill:", error);
+      });
+  }
+
+  handleOpenEditDialog(skillId) {
+    const { skills } = this.state;
+    const skillToEdit = skills.find((skill) => skill.skillId === skillId);
+
+    if (skillToEdit) {
+      this.setState({
+        editingSkillId: skillId,
+        newSkillName: skillToEdit.skillName,
+        newSkillLevel: skillToEdit.skillLevel,
+      });
+    }
+  }
+
+  handleCloseEditDialog() {
+    this.setState({
+      editingSkillId: null,
+      newSkillName: "",
+      newSkillLevel: "",
+    });
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   }
 
   handleDeleteSkill(skillId) {
     UserService.deleteSkill(skillId)
-    .then(() => {
-      // Skill deleted successfully
-      // Update the state to reflect the deleted skill
-      this.setState((prevState) => ({
-        skills: prevState.skills.filter((skill) => skill.skillId !== skillId),
-      }));
-    })
-    .catch((error) => {
-      // Handle error
-      console.log("Error deleting skill:", error);
-    });
+      .then(() => {
+        // Skill deleted successfully
+        // Update the state to reflect the deleted skill
+        this.setState((prevState) => ({
+          skills: prevState.skills.filter((skill) => skill.skillId !== skillId),
+        }));
+      })
+      .catch((error) => {
+        // Handle error
+        console.log("Error deleting skill:", error);
+      });
     console.log(`Delete skill ${skillId} clicked`);
-  }
-
-  render() {
-    const { skills, loading, content } = this.state;
-
+  }render() {
+    const { skills, loading, content, editingSkillId, newSkillName, newSkillLevel } = this.state;
+  
     return (
       <div className="container">
         <h1 className="head">Skills</h1>
@@ -96,7 +170,7 @@ export default class BoardEngineer extends Component {
                     <p className="card-text">Skill level: {skill.skillLevel}</p>
                     <button
                       className="btn btn-primary mr-2"
-                      onClick={() => this.handleEditSkill(skill.skillId)}
+                      onClick={() => this.handleOpenEditDialog(skill.skillId)}
                     >
                       Edit
                     </button>
@@ -113,6 +187,35 @@ export default class BoardEngineer extends Component {
             <button className="btn btn-success mt-2" onClick={this.handleAddSkill}>
               Add Skill
             </button>
+  
+            {/* Edit Skill Dialog */}
+            {editingSkillId && (
+              <div className="dialog-overlay">
+                <div className="dialog-card">
+                  <h2>Edit Skill</h2>
+                  <input
+                    type="text"
+                    name="newSkillName"
+                    placeholder="New Skill Name"
+                    value={newSkillName}
+                    onChange={this.handleChange}
+                  />
+                  <input
+                    type="text"
+                    name="newSkillLevel"
+                    placeholder="New Skill Level"
+                    value={newSkillLevel}
+                    onChange={this.handleChange}
+                  />
+                  <button className="btn btn-primary" onClick={() => this.handleEditSkill(editingSkillId)}>
+                    Save
+                  </button>
+                  <button className="btn btn-secondary" onClick={this.handleCloseEditDialog}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>

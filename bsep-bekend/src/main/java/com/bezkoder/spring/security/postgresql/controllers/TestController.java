@@ -173,7 +173,7 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		skill.setSkillName(skillRequest.getSkillName());
 		skill.setSkillLevel(skillRequest.getSkillLevel());
 		skill.setIsDeleted(false);
-		
+
 		skill = skillService.save(skill);
 
 		return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
