@@ -63,7 +63,18 @@ export default class BoardEngineer extends Component {
   }
 
   handleDeleteSkill(skillId) {
-    // TODO: implement delete skill functionality
+    UserService.deleteSkill(skillId)
+    .then(() => {
+      // Skill deleted successfully
+      // Update the state to reflect the deleted skill
+      this.setState((prevState) => ({
+        skills: prevState.skills.filter((skill) => skill.skillId !== skillId),
+      }));
+    })
+    .catch((error) => {
+      // Handle error
+      console.log("Error deleting skill:", error);
+    });
     console.log(`Delete skill ${skillId} clicked`);
   }
 

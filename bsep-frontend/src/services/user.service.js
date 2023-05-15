@@ -40,6 +40,9 @@ class UserService {
     return axios.get(API_URL + profileId + '/skill', {headers});
   }
 
+  deleteSkill(skillId){
+    return axios.put(API_URL + skillId + '/deleteSkill', {headers: authHeader()});
+  }
 }
 
 export default new UserService();

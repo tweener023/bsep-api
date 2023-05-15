@@ -3,25 +3,29 @@ package com.bezkoder.spring.security.postgresql.dtos;
 import com.bezkoder.spring.security.postgresql.models.Skill;
 
 public class SkillDTO {
-    private Long skillId;
+    private Long id;
     private String skillName;
     private String skillLevel;
     private UserDTO user;
+    private Boolean isDeleted;
 
     public SkillDTO(){
 
     }
+
     public SkillDTO(Skill skill){
-        skillId = skill.getSkillId();
+        id = skill.getSkillId();
         skillName = skill.getSkillName();
         skillLevel = skill.getSkillLevel();
+        isDeleted = skill.getIsDeleted();
     }
+
     public Long getSkillId() {
-        return skillId;
+        return id;
     }
 
     public void setSkillId(Long skillId) {
-        this.skillId = skillId;
+        this.id = skillId;
     }
 
     public String getSkillName() {

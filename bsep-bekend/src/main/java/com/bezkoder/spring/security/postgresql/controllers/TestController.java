@@ -4,6 +4,7 @@ import com.bezkoder.spring.security.postgresql.dtos.SkillDTO;
 import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
 import com.bezkoder.spring.security.postgresql.models.Skill;
 import com.bezkoder.spring.security.postgresql.models.User;
+import com.bezkoder.spring.security.postgresql.security.services.SkillService;
 import com.bezkoder.spring.security.postgresql.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,9 @@ public class TestController {
 
 	@Autowired
 	private UserDetailsServiceImpl userService;
+
+	@Autowired
+	SkillService skillService;
 
 
 	@GetMapping("/all")
@@ -114,13 +118,14 @@ public class TestController {
 	}
 */
 @GetMapping(value = "/{userId}/skill")
-public ResponseEntity<List<SkillDTO>> getUserAppointments(@PathVariable String userId) {
+public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId) {
 	Long id = Long.parseLong(userId);
 	User user = userService.findOne(id);
 	Set<Skill> appointments = user.getSkills();
 	List<SkillDTO> skillsDTO = new ArrayList<>();
 	for (Skill e : appointments) {
 		SkillDTO appointmentDTO = new SkillDTO();
+		appointmentDTO.setSkillId(e.getSkillId());
 		appointmentDTO.setSkillLevel(e.getSkillLevel());
 		appointmentDTO.setUser(new UserDTO(e.getUser()));
 		appointmentDTO.setSkillName(e.getSkillName());
@@ -131,5 +136,23 @@ public ResponseEntity<List<SkillDTO>> getUserAppointments(@PathVariable String u
 }
 
 
+	@PutMapping("/{skillId}/deleteSkill")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<SkillDTO> deleteSkill(@PathVariable("skillId") String skillId) {
+
+		// a user must exist
+		Long id = Long.parseLong(skillId);
+		Skill skill = skillService.findOne(id);
+
+		if (skill == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		skill.setIsDeleted(true);
+
+		skill = skillService.save(skill);
+
+		return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
+	}
 
 }

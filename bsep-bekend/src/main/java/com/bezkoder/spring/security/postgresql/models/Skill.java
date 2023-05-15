@@ -18,9 +18,20 @@ public class Skill {
     @NotBlank
     private String skillLevel;
 
+    private Boolean isDeleted;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;
+
+    public Skill() {
+    }
+
+    public Skill(String skillName, String skillLevel, Boolean isDeleted, User user) {
+        this.skillName = skillName;
+        this.skillLevel = skillLevel;
+        this.isDeleted = isDeleted;
+        this.user = user;
+    }
 
     public Long getSkillId() {
         return id;
@@ -53,5 +64,11 @@ public class Skill {
         this.user = userId;
     }
 
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
 
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }
