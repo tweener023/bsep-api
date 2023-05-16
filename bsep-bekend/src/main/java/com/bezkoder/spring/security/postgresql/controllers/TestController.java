@@ -100,13 +100,16 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 	Set<Skill> appointments = user.getSkills();
 	List<SkillDTO> skillsDTO = new ArrayList<>();
 	for (Skill e : appointments) {
-		SkillDTO appointmentDTO = new SkillDTO();
-		appointmentDTO.setSkillId(e.getSkillId());
-		appointmentDTO.setSkillLevel(e.getSkillLevel());
-		appointmentDTO.setUser(new UserDTO(e.getUser()));
-		appointmentDTO.setSkillName(e.getSkillName());
 
-		skillsDTO.add(appointmentDTO);
+		if(e.getIsDeleted() == false){
+			SkillDTO appointmentDTO = new SkillDTO();
+			appointmentDTO.setSkillId(e.getSkillId());
+			appointmentDTO.setSkillLevel(e.getSkillLevel());
+			appointmentDTO.setUser(new UserDTO(e.getUser()));
+			appointmentDTO.setSkillName(e.getSkillName());
+
+			skillsDTO.add(appointmentDTO);
+		}
 	}
 	return new ResponseEntity<>(skillsDTO, HttpStatus.OK);
 }

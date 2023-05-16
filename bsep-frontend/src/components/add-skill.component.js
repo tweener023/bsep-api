@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import UserService from "../services/user.service";
 import "../styles/AddSkill.css";
+import AuthService from "../services/auth.service";
 
 
 
@@ -8,6 +9,7 @@ export default class AddSkill extends Component {
   constructor(props) {
     super(props);
 
+    console.log(props.currentUser);
     this.state = {
       newSkillName: "",
       newSkillLevel: "",
@@ -15,6 +17,7 @@ export default class AddSkill extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.addSkill = this.addSkill.bind(this);
+    
   }
 
   handleInputChange(event) {
@@ -26,14 +29,14 @@ export default class AddSkill extends Component {
 
   addSkill() {
     const { newSkillName, newSkillLevel } = this.state;
-
+    const { currentUser } = this.props;
     if (!newSkillName || !newSkillLevel) {
       // Display an error message or take appropriate action
       console.log("Please provide both a skill name and skill level.");
       return;
     }
 
-    const { currentUser, onClose } = this.props;
+    const {  onClose } = this.props;
     const newSkill = {
       skillName: newSkillName,
       skillLevel: newSkillLevel,
@@ -45,7 +48,10 @@ export default class AddSkill extends Component {
       },
     };
 
-    UserService.addSkill(newSkill)
+    const current = AuthService.getCurrentUser();
+    const currentId = current.id;
+    console.log(currentId)
+    UserService.addSkill(newSkill, currentId)
       .then((response) => {
         // Handle successful skill addition
         console.log("Skill added successfully:", response.data);
@@ -66,7 +72,8 @@ export default class AddSkill extends Component {
   render() {
     const { newSkillName, newSkillLevel } = this.state;
     const { onClose } = this.props;
-  
+    const { fetchSkills } = this.props;
+
     return (
       <div className="add-skill-card-overlay" onClick={onClose}>
         <div className="add-skill-card" onClick={(e) => e.stopPropagation()}>

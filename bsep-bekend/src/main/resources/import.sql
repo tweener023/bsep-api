@@ -30,11 +30,11 @@ insert into user_roles(user_id,role_id) values (6,1);
 insert into user_roles(user_id,role_id) values (7,1);
 
 
-insert into skills ( skill_name,skill_level, user_id, is_deleted ) values ('Java Spring Boot', '1', '2','false');
-insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('React Native', '2', '2','false');
-insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('React', '3','2','false');
-insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('Spring Security', '4','2','false');
-insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('C#', '2','2','false');
+insert into skills ( skill_name,skill_level, user_id, is_deleted ) values ('Java Spring Boot', 'Intermediate', '2','false');
+insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('React Native', 'Beginner', '2','false');
+insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('React', 'Advanced','2','false');
+insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('Spring Security', 'Expert','2','false');
+insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('C#', 'Advanced','2','false');
 
 
 

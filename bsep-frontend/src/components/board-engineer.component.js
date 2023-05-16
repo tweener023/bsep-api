@@ -15,7 +15,8 @@ export default class BoardEngineer extends Component {
       content: "",
       newSkillName: "", // New skill name input field
       newSkillLevel: "", // New skill level input field
-      showAddSkill: false
+      showAddSkill: false,
+      currentUser: AuthService.getCurrentUser()
     };
 
     this.handleEditSkill = this.handleEditSkill.bind(this);
@@ -25,6 +26,7 @@ export default class BoardEngineer extends Component {
     this.handleCloseEditDialog = this.handleCloseEditDialog.bind(this);
     this.handleClickOnAddSkill = this.handleClickOnAddSkill.bind(this);
     this.handleCloseAddSkill = this.handleCloseAddSkill.bind(this);
+    this.fetchSkills = this.fetchSkills.bind(this);
 
   }
 
@@ -165,7 +167,30 @@ export default class BoardEngineer extends Component {
       showAddSkill: false,
     });
   }
+
+  fetchSkills() {
+    const currentUser = AuthService.getCurrentUser();
+    const profileId = currentUser.id;
   
+    UserService.getEngineerSkills(profileId, currentUser.accessToken)
+      .then((response) => {
+        // Handle successful fetch
+        const skills = response.data;
+        this.setState({
+          skills: skills,
+          error: null,
+        });
+      })
+      .catch((error) => {
+        // Handle error
+        console.log("Error fetching skills:", error);
+        this.setState({
+          skills: [],
+          error: "Failed to fetch skills.",
+        });
+      });
+  }
+
   render() {
     const {
       skills,
@@ -209,7 +234,10 @@ export default class BoardEngineer extends Component {
             {showAddSkill && (
           <div className="add-skill-overlay" onClick={this.handleCloseAddSkill}>
             <div className="add-skill-card" onClick={(e) => e.stopPropagation()}>
-              <AddSkill onClose={this.handleCloseAddSkill} />
+              <AddSkill 
+              currentUser = {this.state.currentUser}
+              fetchSkills = {this.fetchSkills}
+              onClose={this.handleCloseAddSkill} />
             </div>
           </div>
         )}
