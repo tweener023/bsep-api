@@ -1,6 +1,7 @@
 package com.bezkoder.spring.security.postgresql.dtos;
 
 import com.bezkoder.spring.security.postgresql.models.Skill;
+import com.bezkoder.spring.security.postgresql.models.User;
 
 public class SkillDTO {
     private Long id;
@@ -44,11 +45,16 @@ public class SkillDTO {
         this.skillLevel = skillLevel;
     }
 
+
     public UserDTO getUser() {
         return user;
     }
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public void setIsDeleted(boolean b) {
+        this.isDeleted = b;
     }
 }

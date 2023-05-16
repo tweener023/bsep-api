@@ -3,6 +3,7 @@ import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import AuthService from "../services/auth.service";
 import "../styles/Engineer.css";
+import AddSkill from "./add-skill.component";
 
 export default class BoardEngineer extends Component {
   constructor(props) {
@@ -14,19 +15,21 @@ export default class BoardEngineer extends Component {
       content: "",
       newSkillName: "", // New skill name input field
       newSkillLevel: "", // New skill level input field
+      showAddSkill: false
     };
 
-    this.handleAddSkill = this.handleAddSkill.bind(this);
     this.handleEditSkill = this.handleEditSkill.bind(this);
     this.handleDeleteSkill = this.handleDeleteSkill.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleOpenEditDialog = this.handleOpenEditDialog.bind(this);
     this.handleCloseEditDialog = this.handleCloseEditDialog.bind(this);
+    this.handleClickOnAddSkill = this.handleClickOnAddSkill.bind(this);
+    this.handleCloseAddSkill = this.handleCloseAddSkill.bind(this);
 
   }
 
   componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutsideDialog);
+    document.addEventListener("mousedown", this.handleClickOutsideDialog);
 
     const currentUser = AuthService.getCurrentUser();
 
@@ -58,21 +61,17 @@ export default class BoardEngineer extends Component {
       }
     );
   }
-  handleAddSkill() {
-    // TODO: implement add skill functionality
-    console.log("Add skill clicked");
-  }
-  
-componentWillUnmount() {
-  document.removeEventListener('mousedown', this.handleClickOutsideDialog);
-}
 
-handleClickOutsideDialog = (event) => {
-  const dialog = document.querySelector('.dialog-card');
-  if (dialog && !dialog.contains(event.target)) {
-    this.handleCloseEditDialog();
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutsideDialog);
   }
-};
+
+  handleClickOutsideDialog = (event) => {
+    const dialog = document.querySelector(".dialog-card");
+    if (dialog && !dialog.contains(event.target)) {
+      this.handleCloseEditDialog();
+    }
+  };
 
   handleEditSkill(skillId) {
     const currentUser = AuthService.getCurrentUser();
@@ -83,14 +82,14 @@ handleClickOutsideDialog = (event) => {
       console.log("Please provide both a new skill name and skill level.");
       return;
     }
-  
+
     const updatedSkill = {
       skillName: newSkillName,
       skillLevel: newSkillLevel,
       user: currentUser,
-      skillId: skillId
+      skillId: skillId,
     };
-  
+
     UserService.updateSkill(skillId, updatedSkill)
       .then((response) => {
         // Handle successful update
@@ -152,9 +151,32 @@ handleClickOutsideDialog = (event) => {
         console.log("Error deleting skill:", error);
       });
     console.log(`Delete skill ${skillId} clicked`);
-  }render() {
-    const { skills, loading, content, editingSkillId, newSkillName, newSkillLevel } = this.state;
+  }
   
+  
+  handleClickOnAddSkill() {
+    this.setState({
+      showAddSkill: true,
+    });
+  }
+
+  handleCloseAddSkill() {
+    this.setState({
+      showAddSkill: false,
+    });
+  }
+  
+  render() {
+    const {
+      skills,
+      loading,
+      content,
+      editingSkillId,
+      newSkillName,
+      newSkillLevel,
+      showAddSkill
+    } = this.state;
+
     return (
       <div className="container">
         <h1 className="head">Skills</h1>
@@ -184,10 +206,17 @@ handleClickOutsideDialog = (event) => {
                 </div>
               ))}
             </div>
-            <button className="btn btn-success mt-2" onClick={this.handleAddSkill}>
-              Add Skill
-            </button>
-  
+            {showAddSkill && (
+          <div className="add-skill-overlay" onClick={this.handleCloseAddSkill}>
+            <div className="add-skill-card" onClick={(e) => e.stopPropagation()}>
+              <AddSkill onClose={this.handleCloseAddSkill} />
+            </div>
+          </div>
+        )}
+
+        <button className="btn btn-success mt-2" onClick={this.handleClickOnAddSkill}>
+          Add Skill
+        </button>
             {/* Edit Skill Dialog */}
             {editingSkillId && (
               <div className="dialog-overlay">
@@ -207,10 +236,16 @@ handleClickOutsideDialog = (event) => {
                     value={newSkillLevel}
                     onChange={this.handleChange}
                   />
-                  <button className="btn btn-primary" onClick={() => this.handleEditSkill(editingSkillId)}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.handleEditSkill(editingSkillId)}
+                  >
                     Save
                   </button>
-                  <button className="btn btn-secondary" onClick={this.handleCloseEditDialog}>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={this.handleCloseEditDialog}
+                  >
                     Cancel
                   </button>
                 </div>

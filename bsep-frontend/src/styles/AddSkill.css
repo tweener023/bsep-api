@@ -1,0 +1,58 @@
+.add-skill-card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+  
+  .add-skill-card {
+    width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  
+  .add-skill-card h3 {
+    margin-top: 0;
+  }
+  
+  .add-skill-card .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .add-skill-card label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .add-skill-card input[type="text"],
+  .add-skill-card select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .add-skill-card button {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .add-skill-card button:hover {
+    background-color: #0069d9;
+  }
+  
+  

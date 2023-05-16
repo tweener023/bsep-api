@@ -3,7 +3,6 @@ package com.bezkoder.spring.security.postgresql.models;
 import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "skills")
@@ -18,7 +17,8 @@ public class Skill {
 
     private Boolean isDeleted;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Skill() {
@@ -69,4 +69,7 @@ public class Skill {
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+
+
 }
