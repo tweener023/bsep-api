@@ -40,6 +40,14 @@ class UserService {
     return axios.get(API_URL + profileId + '/skill', {headers});
   }
 
+  
+  getEngineerProjects(profileId, token){
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+    return axios.get(API_URL + profileId + '/project', {headers});
+  }
+
   deleteSkill(skillId){
     return axios.put(API_URL + skillId + '/deleteSkill', {headers: authHeader()});
   }
