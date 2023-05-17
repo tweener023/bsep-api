@@ -73,6 +73,9 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Skill> skills = new HashSet<Skill>();
 
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Project> projects = new HashSet<>();
+
 	public User() {
 	}
 
@@ -214,5 +217,13 @@ public class User {
 
 	public void setSkills(Set<Skill> skills) {
 		this.skills= skills;
+	}
+
+	public Set<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
 	}
 }

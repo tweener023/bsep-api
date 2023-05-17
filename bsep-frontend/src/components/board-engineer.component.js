@@ -16,7 +16,7 @@ export default class BoardEngineer extends Component {
       newSkillName: "", // New skill name input field
       newSkillLevel: "", // New skill level input field
       showAddSkill: false,
-      currentUser: AuthService.getCurrentUser()
+      currentUser: AuthService.getCurrentUser(),
     };
 
     this.handleEditSkill = this.handleEditSkill.bind(this);
@@ -27,7 +27,6 @@ export default class BoardEngineer extends Component {
     this.handleClickOnAddSkill = this.handleClickOnAddSkill.bind(this);
     this.handleCloseAddSkill = this.handleCloseAddSkill.bind(this);
     this.fetchSkills = this.fetchSkills.bind(this);
-
   }
 
   componentDidMount() {
@@ -154,8 +153,7 @@ export default class BoardEngineer extends Component {
       });
     console.log(`Delete skill ${skillId} clicked`);
   }
-  
-  
+
   handleClickOnAddSkill() {
     this.setState({
       showAddSkill: true,
@@ -171,7 +169,7 @@ export default class BoardEngineer extends Component {
   fetchSkills() {
     const currentUser = AuthService.getCurrentUser();
     const profileId = currentUser.id;
-  
+
     UserService.getEngineerSkills(profileId, currentUser.accessToken)
       .then((response) => {
         // Handle successful fetch
@@ -199,7 +197,7 @@ export default class BoardEngineer extends Component {
       editingSkillId,
       newSkillName,
       newSkillLevel,
-      showAddSkill
+      showAddSkill,
     } = this.state;
 
     return (
@@ -232,19 +230,29 @@ export default class BoardEngineer extends Component {
               ))}
             </div>
             {showAddSkill && (
-          <div className="add-skill-overlay" onClick={this.handleCloseAddSkill}>
-            <div className="add-skill-card" onClick={(e) => e.stopPropagation()}>
-              <AddSkill 
-              currentUser = {this.state.currentUser}
-              fetchSkills = {this.fetchSkills}
-              onClose={this.handleCloseAddSkill} />
-            </div>
-          </div>
-        )}
+              <div
+                className="add-skill-overlay"
+                onClick={this.handleCloseAddSkill}
+              >
+                <div
+                  className="add-skill-card"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <AddSkill
+                    currentUser={this.state.currentUser}
+                    fetchSkills={this.fetchSkills}
+                    onClose={this.handleCloseAddSkill}
+                  />
+                </div>
+              </div>
+            )}
 
-        <button className="btn btn-success mt-2" onClick={this.handleClickOnAddSkill}>
-          Add Skill
-        </button>
+            <button
+              className="btn btn-success mt-2"
+              onClick={this.handleClickOnAddSkill}
+            >
+              Add Skill
+            </button>
             {/* Edit Skill Dialog */}
             {editingSkillId && (
               <div className="dialog-overlay">
@@ -281,6 +289,8 @@ export default class BoardEngineer extends Component {
             )}
           </>
         )}
+
+        <h1 className="headProjects">Projects</h1>
       </div>
     );
   }

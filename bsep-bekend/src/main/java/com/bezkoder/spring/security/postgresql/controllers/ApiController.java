@@ -1,7 +1,9 @@
 package com.bezkoder.spring.security.postgresql.controllers;
 
+import com.bezkoder.spring.security.postgresql.dtos.ProjectDTO;
 import com.bezkoder.spring.security.postgresql.dtos.SkillDTO;
 import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
+import com.bezkoder.spring.security.postgresql.models.Project;
 import com.bezkoder.spring.security.postgresql.models.Skill;
 import com.bezkoder.spring.security.postgresql.models.User;
 import com.bezkoder.spring.security.postgresql.security.services.SkillService;
@@ -13,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +22,7 @@ import java.util.Set;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/test")
-public class TestController {
+public class ApiController {
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -97,9 +97,9 @@ public class TestController {
 public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId) {
 	Long id = Long.parseLong(userId);
 	User user = userService.findOne(id);
-	Set<Skill> appointments = user.getSkills();
+	Set<Skill> skills = user.getSkills();
 	List<SkillDTO> skillsDTO = new ArrayList<>();
-	for (Skill e : appointments) {
+	for (Skill e : skills) {
 
 		if(e.getIsDeleted() == false){
 			SkillDTO appointmentDTO = new SkillDTO();
@@ -176,5 +176,27 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 
 		newSkill = skillService.save(newSkill);
 		return new ResponseEntity<>(new SkillDTO(newSkill), HttpStatus.CREATED);
+	}
+
+
+	@GetMapping(value = "/{userId}/project")
+	public ResponseEntity<List<ProjectDTO>> getUserProjects(@PathVariable String userId) {
+		Long id = Long.parseLong(userId);
+		User user = userService.findOne(id);
+		Set<Project> projects = user.getProjects();
+		List<ProjectDTO> projectsDTO = new ArrayList<>();
+		for (Project e : projects) {
+
+			if(e.getIsDeleted() == false){
+				ProjectDTO projectDTO = new ProjectDTO();
+				projectDTO.setProjectId(e.getProjectId());
+				projectDTO.setProjectDescription(e.getProjectDescription());
+				projectDTO.setUser(new UserDTO(e.getUser()));
+				projectDTO.setProjectName(e.getProjectName());
+
+				projectsDTO.add(projectDTO);
+			}
+		}
+		return new ResponseEntity<>(projectsDTO, HttpStatus.OK);
 	}
 }

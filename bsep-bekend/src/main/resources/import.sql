@@ -30,4 +30,8 @@ insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('React
 insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('Spring Security', 'Expert','2','false');
 insert into skills ( skill_name,skill_level, user_id, is_deleted) values ('C#', 'Advanced','2','false');
 
+--projects for engineer
+insert into projects ( project_name,project_description, user_id, is_deleted, project_start, project_end) values ('BSEP', 'Projekat iz predmeta BSEP na cetvrtoj godini racunarstva', '2','false','2016-02-01', '2020-02-01');
+insert into projects ( project_name,project_description, user_id, is_deleted, project_start, project_end) values ('ISA', 'Projekat iz predmeta ISA na cetvrtoj godini racunarstva','2','false','2016-02-01', '2020-02-01');
+insert into projects ( project_name,project_description, user_id, is_deleted, project_start, project_end) values ('PSW', 'Projekat iz predmeta PSW na cetvrtoj godini racunarstva','2','false','2016-02-01','2020-02-01');
 
