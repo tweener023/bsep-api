@@ -1,9 +1,13 @@
+
+
+
 import React, { Component } from "react";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import AuthService from "../services/auth.service";
 import "../styles/Engineer.css";
 import AddSkill from "./add-skill.component";
+import ShowProject from "./show-projects.component";
 
 export default class BoardEngineer extends Component {
   constructor(props) {
@@ -11,7 +15,6 @@ export default class BoardEngineer extends Component {
 
     this.state = {
       skills: [],
-      projects:[],
       loading: true,
       content: "",
       newSkillName: "", // New skill name input field
@@ -50,30 +53,6 @@ export default class BoardEngineer extends Component {
       (error) => {
         this.setState({
           skills: [],
-          error:
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString(),
-          loading: false,
-        });
-
-        if (error.response && error.response.status === 401) {
-          EventBus.dispatch("logout");
-        }
-      }
-    );
-    
-    UserService.getEngineerProjects(profileId, currentUser.accessToken).then(
-      (response) => {
-        this.setState({
-          projects: response.data,
-          error: null,
-          loading: false,
-        });
-      },
-      (error) => {
-        this.setState({
-          projects: [],
           error:
             (error.response && error.response.data) ||
             error.message ||
@@ -223,7 +202,6 @@ export default class BoardEngineer extends Component {
       newSkillName,
       newSkillLevel,
       showAddSkill,
-      projects
     } = this.state;
 
     return (
@@ -316,81 +294,12 @@ export default class BoardEngineer extends Component {
           </>
         )}
 
-        <h1 className="headProjects">Projects</h1>
-        {loading && <p>Loading projects...</p>}
-        {content && <p>{content}</p>}
-        {!loading && !content && (
-          <>
-            <div className="card-group">
-              {projects.map((project) => (
-                <div className="card" key={project.projectId}>
-                  <div className="card-body">
-                    <h5 className="card-title">{project.projectName}</h5>
-                    <p className="card-text">Project description: {project.projectDescription}</p>
-                    <button
-                      className="btn btn-primary mr-2"
-                      onClick={() => this.handleOpenEditDialog(project.projectId)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => this.handleDeleteSkill(project.projectId)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-
-            <button
-              className="btn btn-success mt-2"
-              onClick={this.handleClickOnAddSkill}
-            >
-              Add Skill
-            </button>
-            {/* Edit Skill Dialog */}
-            {editingSkillId && (
-              <div className="dialog-overlay">
-                <div className="dialog-card">
-                  <h2>Edit Skill</h2>
-                  <input
-                    type="text"
-                    name="newSkillName"
-                    placeholder="New Skill Name"
-                    value={newSkillName}
-                    onChange={this.handleChange}
-                  />
-                  <input
-                    type="text"
-                    name="newSkillLevel"
-                    placeholder="New Skill Level"
-                    value={newSkillLevel}
-                    onChange={this.handleChange}
-                  />
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.handleEditSkill(editingSkillId)}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={this.handleCloseEditDialog}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-
-
+        <ShowProject />
 
       </div>
     );
   }
 }
+
+
+
