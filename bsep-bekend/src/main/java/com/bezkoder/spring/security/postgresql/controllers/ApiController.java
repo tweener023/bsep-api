@@ -6,6 +6,7 @@ import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
 import com.bezkoder.spring.security.postgresql.models.Project;
 import com.bezkoder.spring.security.postgresql.models.Skill;
 import com.bezkoder.spring.security.postgresql.models.User;
+import com.bezkoder.spring.security.postgresql.security.services.ProjectService;
 import com.bezkoder.spring.security.postgresql.security.services.SkillService;
 import com.bezkoder.spring.security.postgresql.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class ApiController {
 
 	@Autowired
 	SkillService skillService;
+
+	@Autowired
+	ProjectService projectService;
 
 
 	@GetMapping("/all")
@@ -199,4 +203,27 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		}
 		return new ResponseEntity<>(projectsDTO, HttpStatus.OK);
 	}
+
+
+
+
+	@PutMapping("/{projectId}/editProject")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<ProjectDTO> updateProject(@PathVariable("projectId") String projectId, @RequestBody ProjectDTO projectRequest) {
+
+		// a skill must exist
+		Long id = Long.parseLong(projectId);
+		Project project = projectService.findOne(id);
+
+		if (project == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		project.setProjectDescription(projectRequest.getProjectDescription());
+
+		project = projectService.save(project);
+
+		return new ResponseEntity<>(new ProjectDTO(project), HttpStatus.OK);
+	}
+
 }

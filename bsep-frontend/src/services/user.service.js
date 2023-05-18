@@ -57,6 +57,12 @@ class UserService {
     return axios.put(API_URL + skillId + '/editSkill', updatedSkill,{headers: authHeader()});
   }
 
+  
+  updateProject(projectId, updatedProject){
+    console.log(updatedProject);
+    return axios.put(API_URL + projectId + '/editProject', updatedProject,{headers: authHeader()});
+  }
+
   addSkill( newSkill, userId){
     console.log(newSkill);
     return axios.post(API_URL + userId + '/addSkill', newSkill,{headers: authHeader()});
