@@ -226,4 +226,32 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		return new ResponseEntity<>(new ProjectDTO(project), HttpStatus.OK);
 	}
 
+	@PutMapping("/{userId}/editUser")
+	public ResponseEntity<UserDTO> updateUser(@PathVariable("userId") String userId,@RequestBody UserDTO userDTO) {
+
+		// a user must exist
+		Long id = Long.parseLong(userId);
+		User user = userService.findOne(id);
+		
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		user.setPassword(encoder.encode(userDTO.getPassword()));
+		System.out.println("EVO JE SIFRA "+ user.getPassword());
+
+		user.setFirstName(userDTO.getFirstName());
+		user.setLastName(userDTO.getLastName());
+		user.setAddress(userDTO.getAddress());
+		user.setCity(userDTO.getCity());
+		user.setCountry(userDTO.getCountry());
+		user.setCountry(userDTO.getCountry());
+		user.setPhoneNumber(userDTO.getPhoneNumber());
+		user.setTitle(userDTO.getTitle());
+		user.setApproved(true);
+
+		user = userService.save(user);
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+	}
+
 }

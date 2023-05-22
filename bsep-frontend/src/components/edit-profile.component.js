@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AuthService from "../services/auth.service";
+import UserService from "../services/user.service";
 
 export default class EditProfileForm extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ export default class EditProfileForm extends Component {
     event.preventDefault();
     const { currentUser, username, firstName, lastName, address, city, country, phoneNumber, title } = this.state;
 
-    AuthService.updateUser(currentUser.id, { username, firstName, lastName, address, city, country, phoneNumber, title })
+    UserService.updateUser(currentUser.id, { username, firstName, lastName, address, city, country, phoneNumber, title })
       .then(() => {
         window.location.reload();
       })
