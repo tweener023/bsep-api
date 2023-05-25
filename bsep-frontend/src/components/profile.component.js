@@ -31,7 +31,7 @@ export default class Profile extends Component {
     const { currentUser } = this.state;
     //console.log(currentUser);
     try {
-      const response = await fetch("http://localhost:8080/api/test/"+ currentUser.id +"/editUser", {
+      const response = await fetch("https://localhost:443/api/test/"+ currentUser.id +"/editUser", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
