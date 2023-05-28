@@ -62,7 +62,6 @@ public class ApiController {
 	}
 
 	@PutMapping("/{profileId}/activate")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDTO> activateUser(@PathVariable("profileId") String profileId) {
 
 		// a user must exist
@@ -119,7 +118,6 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 }
 
 	@PutMapping("/{skillId}/deleteSkill")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<SkillDTO> deleteSkill(@PathVariable("skillId") String skillId) {
 
 		// a user must exist
@@ -138,7 +136,6 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 	}
 
 	@PutMapping("/{skillId}/editSkill")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<SkillDTO> updateSkill(@PathVariable("skillId") String skillId, @RequestBody SkillDTO skillRequest) {
 
 		// a skill must exist
@@ -160,7 +157,6 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 
 
 	@PostMapping("/{userId}/addSkill")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<SkillDTO> addSkill(@PathVariable("userId") String userId, @RequestBody SkillDTO skillRequest) {
 
 		// a user must exist
@@ -208,7 +204,6 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 
 
 	@PutMapping("/{projectId}/editProject")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ProjectDTO> updateProject(@PathVariable("projectId") String projectId, @RequestBody ProjectDTO projectRequest) {
 
 		// a skill must exist
