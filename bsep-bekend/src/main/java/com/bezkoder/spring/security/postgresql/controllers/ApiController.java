@@ -61,25 +61,6 @@ public class ApiController {
 		return "Admin Board.";
 	}
 
-	@PutMapping("/{profileId}/activate")
-	public ResponseEntity<UserDTO> activateUser(@PathVariable("profileId") String profileId) {
-
-		// a user must exist
-		Long id = Long.parseLong(profileId);
-		User user = userService.findOne(id);
-
-		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		user.setApproved(true);
-
-		user = userService.save(user);
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
-	}
-
-
-	//ne diraj
 	@GetMapping(value = "/unactivated")
 	public ResponseEntity<List<UserDTO>> getUnactivatedUsers() {
 
@@ -97,6 +78,7 @@ public class ApiController {
 	}
 
 @GetMapping(value = "/{userId}/skill")
+@PreAuthorize("hasAnyRole('ENGINEER')")
 public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId) {
 	Long id = Long.parseLong(userId);
 	User user = userService.findOne(id);
@@ -136,6 +118,7 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 	}
 
 	@PutMapping("/{skillId}/editSkill")
+	@PreAuthorize("hasAnyRole('ENGINEER')")
 	public ResponseEntity<SkillDTO> updateSkill(@PathVariable("skillId") String skillId, @RequestBody SkillDTO skillRequest) {
 
 		// a skill must exist
@@ -157,6 +140,7 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 
 
 	@PostMapping("/{userId}/addSkill")
+	@PreAuthorize("hasAnyRole('ENGINEER')")
 	public ResponseEntity<SkillDTO> addSkill(@PathVariable("userId") String userId, @RequestBody SkillDTO skillRequest) {
 
 		// a user must exist
@@ -180,6 +164,7 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 
 
 	@GetMapping(value = "/{userId}/project")
+	@PreAuthorize("hasAnyRole('ENGINEER')")
 	public ResponseEntity<List<ProjectDTO>> getUserProjects(@PathVariable String userId) {
 		Long id = Long.parseLong(userId);
 		User user = userService.findOne(id);
@@ -200,10 +185,8 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		return new ResponseEntity<>(projectsDTO, HttpStatus.OK);
 	}
 
-
-
-
 	@PutMapping("/{projectId}/editProject")
+	@PreAuthorize("hasAnyRole('ENGINEER')")
 	public ResponseEntity<ProjectDTO> updateProject(@PathVariable("projectId") String projectId, @RequestBody ProjectDTO projectRequest) {
 
 		// a skill must exist
@@ -248,5 +231,25 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		user = userService.save(user);
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
 	}
+
+
+	@PutMapping("/{profileId}/activate")
+	public ResponseEntity<UserDTO> activateUser(@PathVariable("profileId") String profileId) {
+
+		// a user must exist
+		Long id = Long.parseLong(profileId);
+		User user = userService.findOne(id);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		user.setApproved(true);
+
+		user = userService.save(user);
+		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+	}
+
+
 
 }

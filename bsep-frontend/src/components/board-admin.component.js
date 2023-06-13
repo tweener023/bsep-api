@@ -51,6 +51,7 @@ export default class BoardAdmin extends Component {
 
   activateProfile(profile) {
     const currentUser = AuthService.getCurrentUser();
+    console.log(JSON.stringify(currentUser));
 
    // console.log("user je " + JSON.stringify(currentUser));
     UserService.activateProfile(profile.id, currentUser.accessToken).then(
