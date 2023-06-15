@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -12,9 +12,7 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardEngineer from "./components/board-engineer.component";
 import BoardAdmin from "./components/board-admin.component";
-
-// import AuthVerify from "./common/auth-verify";
-import EventBus from "./common/EventBus";
+import ProtectedRoute from "./components/protected-route.component";
 
 class App extends Component {
   constructor(props) {
@@ -22,7 +20,7 @@ class App extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
-      showModeratorBoard: false,
+      showEngineerBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
     };
@@ -38,14 +36,6 @@ class App extends Component {
         showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
-    
-    EventBus.on("logout", () => {
-      this.logOut();
-    });
-  }
-
-  componentWillUnmount() {
-    EventBus.remove("logout");
   }
 
   logOut() {
@@ -59,7 +49,7 @@ class App extends Component {
 
   render() {
     const { currentUser, showEngineerBoard, showAdminBoard } = this.state;
-
+  
     return (
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -72,7 +62,7 @@ class App extends Component {
                 Home
               </Link>
             </li>
-
+  
             {showEngineerBoard && (
               <li className="nav-item">
                 <Link to={"/engineer"} className="nav-link">
@@ -80,7 +70,7 @@ class App extends Component {
                 </Link>
               </li>
             )}
-
+  
             {showAdminBoard && (
               <li className="nav-item">
                 <Link to={"/admin"} className="nav-link">
@@ -88,7 +78,7 @@ class App extends Component {
                 </Link>
               </li>
             )}
-
+  
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
@@ -97,7 +87,7 @@ class App extends Component {
               </li>
             )}
           </div>
-
+  
           {currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
@@ -118,7 +108,7 @@ class App extends Component {
                   Login
                 </Link>
               </li>
-
+  
               <li className="nav-item">
                 <Link to={"/register"} className="nav-link">
                   Sign Up
@@ -127,7 +117,7 @@ class App extends Component {
             </div>
           )}
         </nav>
-
+  
         <div className="container mt-3">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -140,8 +130,8 @@ class App extends Component {
             <Route path="/admin" element={<BoardAdmin />} />
           </Routes>
         </div>
-
-        {/* <AuthVerify logOut={this.logOut}/> */}
+  
+        {/* ...remaining code */}
       </div>
     );
   }

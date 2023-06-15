@@ -61,21 +61,6 @@ public class ApiController {
 		return "Admin Board.";
 	}
 
-	@GetMapping(value = "/unactivated")
-	public ResponseEntity<List<UserDTO>> getUnactivatedUsers() {
-
-		List<User> users = (List<User>) userService.findAll();
-
-		// convert users to DTOs
-		List<UserDTO> usersDTO = new ArrayList<>();
-		for (User u : users) {
-			if((u.getApproved() == null) ||(u.getApproved() == false) ){
-				usersDTO.add(new UserDTO(u));
-			}
-		}
-
-		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
-	}
 
 @GetMapping(value = "/{userId}/skill")
 @PreAuthorize("hasAnyRole('ENGINEER')")
@@ -251,5 +236,20 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 	}
 
 
+	@GetMapping(value = "/unactivated")
+	public ResponseEntity<List<UserDTO>> getUnactivatedUsers() {
+
+		List<User> users = (List<User>) userService.findAll();
+
+		// convert users to DTOs
+		List<UserDTO> usersDTO = new ArrayList<>();
+		for (User u : users) {
+			if((u.getApproved() == null) ||(u.getApproved() == false) ){
+				usersDTO.add(new UserDTO(u));
+			}
+		}
+
+		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
+	}
 
 }
