@@ -35,3 +35,12 @@ insert into projects ( project_name,project_description, user_id, is_deleted, pr
 insert into projects ( project_name,project_description, user_id, is_deleted, project_start, project_end) values ('ISA', 'Projekat iz predmeta ISA na cetvrtoj godini racunarstva','2','false','2016-02-01', '2020-02-01');
 insert into projects ( project_name,project_description, user_id, is_deleted, project_start, project_end) values ('PSW', 'Projekat iz predmeta PSW na cetvrtoj godini racunarstva','2','false','2016-02-01','2020-02-01');
 
+insert into permissions (can_create, can_read, can_update, can_delete, user_id) values ('true','true','true','true', 1);
+insert into permissions (can_create, can_read, can_update, can_delete, user_id) values ('true','true','true','true', 2);
+insert into permissions (can_create, can_read, can_update, can_delete, user_id) values ('true','true','true','true', 3);
+
+
+insert into permissions (can_create, can_read, can_update, can_delete, user_id) values ('false','true','false','false', 4);
+insert into permissions (can_create, can_read, can_update, can_delete, user_id) values ('false','true','false','false', 5);
+insert into permissions (can_create, can_read, can_update, can_delete, user_id) values ('false','true','false','false', 6);
+insert into permissions (can_create, can_read, can_update, can_delete, user_id) values ('false','true','false','false', 7);

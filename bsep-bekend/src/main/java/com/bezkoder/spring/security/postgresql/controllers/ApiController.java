@@ -3,9 +3,11 @@ package com.bezkoder.spring.security.postgresql.controllers;
 import com.bezkoder.spring.security.postgresql.dtos.ProjectDTO;
 import com.bezkoder.spring.security.postgresql.dtos.SkillDTO;
 import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
+import com.bezkoder.spring.security.postgresql.models.Permissions;
 import com.bezkoder.spring.security.postgresql.models.Project;
 import com.bezkoder.spring.security.postgresql.models.Skill;
 import com.bezkoder.spring.security.postgresql.models.User;
+import com.bezkoder.spring.security.postgresql.security.services.PermissionService;
 import com.bezkoder.spring.security.postgresql.security.services.ProjectService;
 import com.bezkoder.spring.security.postgresql.security.services.SkillService;
 import com.bezkoder.spring.security.postgresql.security.services.UserDetailsServiceImpl;
@@ -37,6 +39,9 @@ public class ApiController {
 	@Autowired
 	ProjectService projectService;
 
+	@Autowired
+	PermissionService permissionService;
+
 
 	@GetMapping("/all")
 	public String allAccess() {
@@ -62,26 +67,49 @@ public class ApiController {
 	}
 
 
-@GetMapping(value = "/{userId}/skill")
+	private boolean hasCreatePermission(User user) {
+		Permissions userPermissions = permissionService.findOneByUser(user);
+		return userPermissions.getCreate();
+	}
+
+	private boolean hasReadPermission(User user) {
+		Permissions userPermissions = permissionService.findOneByUser(user);
+		return userPermissions.getRead();
+	}
+
+	private boolean hasUpdatePermission(User user) {
+		Permissions userPermissions = permissionService.findOneByUser(user);
+		return userPermissions.getUpdate();
+	}
+
+	private boolean hasDeletePermission(User user) {
+		Permissions userPermissions = permissionService.findOneByUser(user);
+		return userPermissions.getDelete();
+	}
+
+	@GetMapping(value = "/{userId}/skill")
 @PreAuthorize("hasAnyRole('ENGINEER')")
 public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId) {
 	Long id = Long.parseLong(userId);
 	User user = userService.findOne(id);
-	Set<Skill> skills = user.getSkills();
-	List<SkillDTO> skillsDTO = new ArrayList<>();
-	for (Skill e : skills) {
+	if(hasReadPermission(user)){
+		Set<Skill> skills = user.getSkills();
+		List<SkillDTO> skillsDTO = new ArrayList<>();
+		for (Skill e : skills) {
 
-		if(e.getIsDeleted() == false){
-			SkillDTO appointmentDTO = new SkillDTO();
-			appointmentDTO.setSkillId(e.getSkillId());
-			appointmentDTO.setSkillLevel(e.getSkillLevel());
-			appointmentDTO.setUser(new UserDTO(e.getUser()));
-			appointmentDTO.setSkillName(e.getSkillName());
+			if(e.getIsDeleted() == false){
+				SkillDTO appointmentDTO = new SkillDTO();
+				appointmentDTO.setSkillId(e.getSkillId());
+				appointmentDTO.setSkillLevel(e.getSkillLevel());
+				appointmentDTO.setUser(new UserDTO(e.getUser()));
+				appointmentDTO.setSkillName(e.getSkillName());
 
-			skillsDTO.add(appointmentDTO);
+				skillsDTO.add(appointmentDTO);
+			}
 		}
+		return new ResponseEntity<>(skillsDTO, HttpStatus.OK);
 	}
-	return new ResponseEntity<>(skillsDTO, HttpStatus.OK);
+	else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 }
 
 	@PutMapping("/{skillId}/deleteSkill")
@@ -90,16 +118,19 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		// a user must exist
 		Long id = Long.parseLong(skillId);
 		Skill skill = skillService.findOne(id);
+		User user = userService.findOne(skill.getUser().getId());
 
-		if (skill == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if(hasDeletePermission(user)){
+			if (skill == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			skill.setIsDeleted(true);
+			skill = skillService.save(skill);
+
+			return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
+
 		}
-
-		skill.setIsDeleted(true);
-
-		skill = skillService.save(skill);
-
-		return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
+		else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
 
 	@PutMapping("/{skillId}/editSkill")
@@ -109,18 +140,21 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		// a skill must exist
 		Long id = Long.parseLong(skillId);
 		Skill skill = skillService.findOne(id);
+		User user = userService.findOne(skill.getUser().getId());
 
-		if (skill == null) {
+		if(hasUpdatePermission(user)){	if (skill == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		skill.setSkillName(skillRequest.getSkillName());
-		skill.setSkillLevel(skillRequest.getSkillLevel());
-		skill.setIsDeleted(false);
+			skill.setSkillName(skillRequest.getSkillName());
+			skill.setSkillLevel(skillRequest.getSkillLevel());
+			skill.setIsDeleted(false);
 
-		skill = skillService.save(skill);
+			skill = skillService.save(skill);
 
-		return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
+			return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
+		}
+		else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
 
 
@@ -132,20 +166,25 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		Long id = Long.parseLong(userId);
 		User user = userService.findOne(skillRequest.getUser().getId());
 
-		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if(hasCreatePermission(user)){
+			if (user == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+
+			Skill newSkill = new Skill();
+			newSkill.setSkillName(skillRequest.getSkillName());
+			newSkill.setSkillLevel(skillRequest.getSkillLevel());
+			newSkill.setIsDeleted(false);
+
+			newSkill.setUser(user);
+
+			newSkill = skillService.save(newSkill);
+			return new ResponseEntity<>(new SkillDTO(newSkill), HttpStatus.CREATED);
 		}
+		else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-		Skill newSkill = new Skill();
-		newSkill.setSkillName(skillRequest.getSkillName());
-		newSkill.setSkillLevel(skillRequest.getSkillLevel());
-		newSkill.setIsDeleted(false);
-
-		newSkill.setUser(user);
-
-		newSkill = skillService.save(newSkill);
-		return new ResponseEntity<>(new SkillDTO(newSkill), HttpStatus.CREATED);
 	}
+
 
 
 	@GetMapping(value = "/{userId}/project")
@@ -153,21 +192,23 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 	public ResponseEntity<List<ProjectDTO>> getUserProjects(@PathVariable String userId) {
 		Long id = Long.parseLong(userId);
 		User user = userService.findOne(id);
-		Set<Project> projects = user.getProjects();
-		List<ProjectDTO> projectsDTO = new ArrayList<>();
-		for (Project e : projects) {
+		if(hasReadPermission(user)){	Set<Project> projects = user.getProjects();
+			List<ProjectDTO> projectsDTO = new ArrayList<>();
+			for (Project e : projects) {
 
-			if(e.getIsDeleted() == false){
-				ProjectDTO projectDTO = new ProjectDTO();
-				projectDTO.setProjectId(e.getProjectId());
-				projectDTO.setProjectDescription(e.getProjectDescription());
-				projectDTO.setUser(new UserDTO(e.getUser()));
-				projectDTO.setProjectName(e.getProjectName());
+				if(e.getIsDeleted() == false){
+					ProjectDTO projectDTO = new ProjectDTO();
+					projectDTO.setProjectId(e.getProjectId());
+					projectDTO.setProjectDescription(e.getProjectDescription());
+					projectDTO.setUser(new UserDTO(e.getUser()));
+					projectDTO.setProjectName(e.getProjectName());
 
-				projectsDTO.add(projectDTO);
+					projectsDTO.add(projectDTO);
+				}
 			}
+			return new ResponseEntity<>(projectsDTO, HttpStatus.OK);
 		}
-		return new ResponseEntity<>(projectsDTO, HttpStatus.OK);
+		else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
 
 	@PutMapping("/{projectId}/editProject")
@@ -178,15 +219,20 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		Long id = Long.parseLong(projectId);
 		Project project = projectService.findOne(id);
 
-		if (project == null) {
+		User user = userService.findOne(project.getUser().getId());
+
+		if(hasUpdatePermission(user)){
+			if (project == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+
+			project.setProjectDescription(projectRequest.getProjectDescription());
+			project = projectService.save(project);
+
+			return new ResponseEntity<>(new ProjectDTO(project), HttpStatus.OK);
 		}
+		else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-		project.setProjectDescription(projectRequest.getProjectDescription());
-
-		project = projectService.save(project);
-
-		return new ResponseEntity<>(new ProjectDTO(project), HttpStatus.OK);
 	}
 
 	@PutMapping("/{userId}/editUser")
@@ -225,14 +271,15 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 		Long id = Long.parseLong(profileId);
 		User user = userService.findOne(id);
 
-		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+			if (user == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
 
-		user.setApproved(true);
+			user.setApproved(true);
+			user = userService.save(user);
 
-		user = userService.save(user);
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+			return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+
 	}
 
 

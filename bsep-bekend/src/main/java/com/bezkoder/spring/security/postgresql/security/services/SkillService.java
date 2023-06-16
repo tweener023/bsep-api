@@ -1,6 +1,8 @@
 package com.bezkoder.spring.security.postgresql.security.services;
 
+import com.bezkoder.spring.security.postgresql.models.Permissions;
 import com.bezkoder.spring.security.postgresql.models.Skill;
+import com.bezkoder.spring.security.postgresql.models.User;
 import com.bezkoder.spring.security.postgresql.repository.UserSkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
