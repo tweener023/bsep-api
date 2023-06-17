@@ -1,5 +1,6 @@
 package com.bezkoder.spring.security.postgresql.controllers;
 
+import com.bezkoder.spring.security.postgresql.dtos.PermissionsDTO;
 import com.bezkoder.spring.security.postgresql.dtos.ProjectDTO;
 import com.bezkoder.spring.security.postgresql.dtos.SkillDTO;
 import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
@@ -298,5 +299,59 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 
 		return new ResponseEntity<>(usersDTO, HttpStatus.OK);
 	}
+
+	@PutMapping("/{userId}/giveCrudPermissions")
+	public ResponseEntity<PermissionsDTO> giveCrudPermissions(@PathVariable("userId") String userId) {
+
+		// a user must exist
+		Long id = Long.parseLong(userId);
+		User user = userService.findOne(id);
+		Permissions permissions = permissionService.findOneByUser(user);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if (permissions == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		permissions.setCreate(true);
+		permissions.setRead(true);
+		permissions.setUpdate(true);
+		permissions.setDelete(true);
+
+		permissions = permissionService.save(permissions);
+
+		return new ResponseEntity<>(new PermissionsDTO(permissions), HttpStatus.OK);
+
+	}
+
+	@PutMapping("/{userId}/unauthorize")
+	public ResponseEntity<PermissionsDTO> unauthorize(@PathVariable("userId") String userId) {
+
+		// a user must exist
+		Long id = Long.parseLong(userId);
+		User user = userService.findOne(id);
+		Permissions permissions = permissionService.findOneByUser(user);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if (permissions == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		permissions.setCreate(false);
+		permissions.setRead(true);
+		permissions.setUpdate(false);
+		permissions.setDelete(false);
+
+		permissions = permissionService.save(permissions);
+
+		return new ResponseEntity<>(new PermissionsDTO(permissions), HttpStatus.OK);
+
+	}
+
+
 
 }

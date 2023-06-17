@@ -11,6 +11,7 @@ export default class BoardAdmin extends Component {
     this.state = {
       content: "",
       unactivatedProfiles: [],
+      activatedProfiles: [],
     };
   }
 
@@ -51,17 +52,44 @@ export default class BoardAdmin extends Component {
 
   activateProfile(profile) {
     const currentUser = AuthService.getCurrentUser();
-    console.log(JSON.stringify(currentUser));
 
-   // console.log("user je " + JSON.stringify(currentUser));
     UserService.activateProfile(profile.id, currentUser.accessToken).then(
       (response) => {
-        // remove the activated profile from the state
         const updatedProfiles = this.state.unactivatedProfiles.filter(
           (p) => p.id !== profile.id
         );
         this.setState({
           unactivatedProfiles: updatedProfiles,
+          activatedProfiles: [...this.state.activatedProfiles, profile.id],
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  giveCrudPermissions(userId, token) {
+    UserService.giveCrudPermissions(userId, token).then(
+      (response) => {
+        this.setState({
+          activatedProfiles: [...this.state.activatedProfiles, userId],
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  unauthorize(userId, token) {
+    UserService.unauthorize(userId, token).then(
+      (response) => {
+        const updatedProfiles = this.state.activatedProfiles.filter(
+          (id) => id !== userId
+        );
+        this.setState({
+          activatedProfiles: updatedProfiles,
         });
       },
       (error) => {
@@ -75,43 +103,70 @@ export default class BoardAdmin extends Component {
       <div className="container">
         <header className="jumbotron">
           <h3>Unactivated profiles</h3>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Address</th>
-              <th>City</th>
-              <th>Country</th>
-              <th>Phone Number</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.unactivatedProfiles.map((profile) => (
-              <tr key={profile.id}>
-                <td>{profile.username}</td>
-                <td>{profile.firstName}</td>
-                <td>{profile.lastName}</td>
-                <td>{profile.address}</td>
-                <td>{profile.city}</td>
-                <td>{profile.country}</td>
-                <td>{profile.phoneNumber}</td>
-                <td>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.activateProfile(profile)}
-                  >
-                    Activate
-                  </button>
-                </td>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {this.state.unactivatedProfiles.map((profile) => (
+                <tr key={profile.id}>
+                  <td>{profile.username}</td>
+                  <td>{profile.firstName}</td>
+                  <td>{profile.lastName}</td>
+                  <td>{profile.address}</td>
+                  <td>{profile.city}</td>
+                  <td>{profile.country}</td>
+                  <td>{profile.phoneNumber}</td>
+                  <td>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => this.activateProfile(profile)}
+                    >
+                      Activate
+                    </button>
+                    {this.state.activatedProfiles.includes(profile.id) ? (
+                      <button
+                        className="btn btn-danger"
+                        onClick={() =>
+                          this.unauthorize(
+                            profile.id,
+                            AuthService.getCurrentUser().accessToken
+                          )
+                        }
+                      >
+                        Unauthorize
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-success"
+                        onClick={() =>
+                          this.giveCrudPermissions(
+                            profile.id,
+                            AuthService.getCurrentUser().accessToken
+                          )
+                        }
+                        disabled={this.state.activatedProfiles.includes(
+                          profile.id
+                        )}
+                      >
+                        Authorize
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </header>
-        
       </div>
     );
   }

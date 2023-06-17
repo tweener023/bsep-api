@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.bezkoder.spring.security.postgresql.models.Permissions;
+import com.bezkoder.spring.security.postgresql.security.services.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,6 +52,9 @@ public class AuthController {
 
 	@Autowired
 	JwtUtils jwtUtils;
+
+	@Autowired
+	PermissionService permissionService;
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -147,6 +152,8 @@ public class AuthController {
 
 		user.setRoles(roles);
 		userRepository.save(user);
+		Permissions permissions = new Permissions(false, true, false, false, user);
+		permissionService.save(permissions);
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}

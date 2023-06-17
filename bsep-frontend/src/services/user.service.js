@@ -25,14 +25,29 @@ class UserService {
   }
 
   activateProfile(profileId, token){
-    //const headers = {
-    //  Authorization: `Bearer ${token}`
-    //};
-   //console.log("User is " + token);
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+   console.log("User is " + token);
     return axios.put(API_URL + profileId +'/activate', {headers:authHeader()});
   }
 
-  
+  giveCrudPermissions(profileId, token){
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+   console.log("User is " + token);
+    return axios.put(API_URL + profileId +'/giveCrudPermissions', {headers:authHeader()});
+  }
+
+  unauthorize(profileId, token){
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+   console.log("User is " + token);
+    return axios.put(API_URL + profileId +'/unauthorize', {headers:authHeader()});
+  }
+
   getEngineerSkills(profileId, token){
     const headers = {
       Authorization: `Bearer ${token}`
@@ -51,7 +66,7 @@ class UserService {
   deleteSkill(skillId){
     return axios.put(API_URL + skillId + '/deleteSkill', {headers: authHeader()});
   }
-
+  
   updateSkill(skillId, updatedSkill){
     console.log(updatedSkill);
     return axios.put(API_URL + skillId + '/editSkill', updatedSkill,{headers: authHeader()});
