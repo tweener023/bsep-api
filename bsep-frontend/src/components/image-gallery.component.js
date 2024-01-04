@@ -1,4 +1,3 @@
-// ImageGallery component
 import React from 'react';
 
 const ImageGallery = ({ images, onImageClick }) => {

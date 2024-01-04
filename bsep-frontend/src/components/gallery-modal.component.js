@@ -1,9 +1,9 @@
-// GalleryModal component
 import React, { useState, useEffect } from 'react';
 import ImageGallery from './image-gallery.component';
-import GuitarInfo from './guitar-info.component';  // Import the new component
-import '../styles/GalleryStyles.css'; // Import the CSS file
+import GuitarInfo from './guitar-info.component';  
+import '../styles/GalleryStyles.css'; 
 
+import {api_url} from '../common/environment';
 
 const GalleryModal = ({ guitarId, onClose }) => {
   const [images, setImages] = useState([]);
@@ -12,13 +12,12 @@ const GalleryModal = ({ guitarId, onClose }) => {
 
 
   useEffect(() => {
-     // Fetch guitar information
-     fetch(`https://localhost:443/api/horder/guitars/${guitarId}`)
+     fetch(api_url + `horder/guitars/${guitarId}`)
      .then((response) => response.json())
      .then((data) => setGuitarInfo(data))
      .catch((error) => console.error('Error fetching guitar info:', error));
 
-    fetch(`https://localhost:443/api/horder/images/${guitarId}/getAllPhotos`)
+    fetch(api_url + `horder/images/${guitarId}/getAllPhotos`)
       .then((response) => response.json())
       .then((data) => setImages(data))
       .catch((error) => console.error('Error fetching guitar photos:', error));

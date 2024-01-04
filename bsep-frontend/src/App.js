@@ -54,19 +54,19 @@ class App extends Component {
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/"} className="navbar-brand">
-            BSEP
+            Horder
           </Link>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
-                Home
+                All Guitars
               </Link>
             </li>
   
             {showEngineerBoard && (
               <li className="nav-item">
                 <Link to={"/engineer"} className="nav-link">
-                  Engineer Board
+                  User Board
                 </Link>
               </li>
             )}

@@ -1,6 +1,6 @@
 // Home.js
 import React, { Component } from "react";
-import GuitarCard from "./guitar-card.component"; // Import the GuitarCard component
+import GuitarCard from "./guitar-card.component"; 
 
 export default class Home extends Component {
   constructor(props) {
@@ -8,12 +8,11 @@ export default class Home extends Component {
 
     this.state = {
       content: "",
-      guitars: [] // Add a state property for storing guitar data
+      guitars: [] 
     };
   }
 
   componentDidMount() {
-    // Fetch guitar data (replace this with your actual API call)
     fetch("https://localhost:443/api/horder/guitars/all")
       .then(response => response.json())
       .then(data => {
