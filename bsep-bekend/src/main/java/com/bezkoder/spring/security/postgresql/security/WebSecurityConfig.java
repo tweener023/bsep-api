@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +23,7 @@ import com.bezkoder.spring.security.postgresql.security.jwt.AuthTokenFilter;
 import com.bezkoder.spring.security.postgresql.security.services.UserDetailsServiceImpl;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(
 		// securedEnabled = true,
 		// jsr250Enabled = true,
@@ -81,20 +82,27 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //
 //		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //	}
-	
-	@Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.cors().and().csrf().disable()
-        .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-        .antMatchers("/api/test/**").permitAll()
-        .anyRequest().authenticated();
-    
-    http.authenticationProvider(authenticationProvider());
 
-    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    
-    return http.build();
-  }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/test/**").permitAll()
+                .antMatchers("/api/horder/guitars/all").permitAll() // Allow unauthenticated
+                .antMatchers("/api/horder/images/{guitarId}/getTopImage").permitAll() // Allow unauthenticated
+                .antMatchers("/api/horder/images/{guitarId}/getAllPhotos").permitAll() // Allow unauthenticate
+                .antMatchers("/api/horder/guitars/{guitarId}").permitAll() // Allow unauthenticated
+                .anyRequest().authenticated();
+
+        http.authenticationProvider(authenticationProvider());
+
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+
 }

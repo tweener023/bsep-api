@@ -3,6 +3,8 @@ package com.bezkoder.spring.security.postgresql.controllers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -55,6 +57,70 @@ public class AuthController {
 
 	@Autowired
 	PermissionService permissionService;
+
+
+	private boolean isValidName(String name) {
+		String regex = "^[A-Z][a-z]*$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(name);
+		return matcher.matches();
+	}
+
+	private boolean isValidAddress(String address) {
+		String regex = "^[a-zA-Z0-9\\s,.-]*$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(address);
+		return matcher.matches();
+	}
+
+	private boolean isValidCityName(String cityName) {
+		String regex = "^(?:[A-Z][a-z]*)(?:\\s[A-Z][a-z]*)*$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(cityName);
+		return matcher.matches();
+	}
+
+	private boolean isValidPhoneNumber(String phoneNumber) {
+		String regex = "^[0-9]{3}[-\\s]?[0-9]{3}[-\\s]?[0-9]{4}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(phoneNumber);
+		return matcher.matches();
+	}
+
+	private boolean isValidJMBG(String jmbg) {
+		String regex = "^[0-9]{8}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(jmbg);
+		return matcher.matches();
+	}
+
+	private boolean isValidWorkplace(String workplace) {
+		String regex = "^[a-zA-Z0-9\\s.,'-]*$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(workplace);
+		return matcher.matches();
+	}
+
+	private boolean isValidCountry(String country) {
+		String regex = "^(?:[A-Z][a-z]*)(?:\\s[A-Z][a-z]*)*$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(country);
+		return matcher.matches();
+	}
+
+	private boolean isValidZipCode(String zipCode) {
+		String regex = "^\\d{5}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(zipCode);
+		return matcher.matches();
+	}
+
+	private boolean isValidUsername(String username) {
+		String regex = "^[a-zA-Z0-9_]{3,20}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(username);
+		return matcher.matches();
+	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {

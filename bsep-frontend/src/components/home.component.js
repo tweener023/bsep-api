@@ -1,40 +1,41 @@
+// Home.js
 import React, { Component } from "react";
-
-import UserService from "../services/user.service";
+import GuitarCard from "./guitar-card.component"; // Import the GuitarCard component
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
+      guitars: [] // Add a state property for storing guitar data
     };
   }
 
   componentDidMount() {
-    UserService.getPublicContent().then(
-      response => {
+    // Fetch guitar data (replace this with your actual API call)
+    fetch("https://localhost:443/api/horder/guitars/all")
+      .then(response => response.json())
+      .then(data => {
         this.setState({
-          content: response.data
+          guitars: data
         });
-      },
-      error => {
-        this.setState({
-          content:
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString()
-        });
-      }
-    );
+      })
+      .catch(error => console.error("Error fetching guitars:", error));
   }
 
   render() {
+    const { guitars } = this.state;
+
     return (
-      <div className="container">
-        <header className="jumbotron">
-          <h3>{this.state.content}</h3>
-        </header>
+      <div className="container home-container">
+        <div className="row">
+          {guitars.map(guitar => (
+            <div key={guitar.id} className="col-md-4">
+              <GuitarCard guitar={guitar} />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

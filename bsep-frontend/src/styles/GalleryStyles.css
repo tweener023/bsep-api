@@ -1,0 +1,20 @@
+.modal-dialog {
+  margin: 30px auto; 
+}
+
+.modal-body {
+  padding: 20px; 
+  border-bottom: 1px solid #ccc; 
+}
+
+.modal::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.guitar-info-container{
+  background-color: lightgray;
+}

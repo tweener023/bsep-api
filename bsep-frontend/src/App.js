@@ -131,7 +131,6 @@ class App extends Component {
           </Routes>
         </div>
   
-        {/* ...remaining code */}
       </div>
     );
   }

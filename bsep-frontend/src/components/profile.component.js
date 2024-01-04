@@ -10,7 +10,20 @@ export default class Profile extends Component {
       editing: false,
       redirect: null,
       userReady: false,
-      currentUser: { username: "" },
+      currentUser: {
+        username: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        address: "",
+        city: "",
+        country: "",
+        phoneNumber: "",
+        title: "",
+      },
+      file: null,
+      fileUploaded: false,
     };
   }
 
@@ -27,18 +40,20 @@ export default class Profile extends Component {
 
   handleSave = async () => {
     const token = AuthService.getJwt();
-    // console.log("evo ga token " + token);
     const { currentUser } = this.state;
-    //console.log(currentUser);
+
     try {
-      const response = await fetch("https://localhost:443/api/test/"+ currentUser.id +"/editUser", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(currentUser),
-      });
+      const response = await fetch(
+        "https://localhost:443/api/test/" + currentUser.id + "/editUser",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(currentUser),
+        }
+      );
       if (!response.ok) {
         throw new Error(response.statusText);
       }
@@ -55,8 +70,36 @@ export default class Profile extends Component {
     });
   };
 
+  handleFileChange = (event) => {
+    this.setState({ file: event.target.files[0] });
+  };
+
+  handleFileUpload = async () => {
+    const user = AuthService.getCurrentUser();
+    const { file } = this.state;
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("https://localhost:443/api/test/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      this.setState({ fileUploaded: true });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   render() {
-    const { redirect, userReady, editing } = this.state;
+    const { redirect, userReady, editing, fileUploaded } = this.state;
 
     if (this.state.redirect) {
       return <Navigate to={this.state.redirect} />;
@@ -70,7 +113,9 @@ export default class Profile extends Component {
           <div>
             <header className="jumbotron">
               <h3 className="usernameH3">
-                <strong>{currentUser.firstName} {currentUser.lastName} </strong>
+                <strong>
+                  {currentUser.firstName} {currentUser.lastName}
+                </strong>
               </h3>
               <div className="info-card">
                 <p>
@@ -84,7 +129,7 @@ export default class Profile extends Component {
                       onChange={this.handleChange}
                     />
                   ) : (
-                    currentUser.email
+                    currentUser.password
                   )}
                 </p>
                 <p>
@@ -111,6 +156,19 @@ export default class Profile extends Component {
                     />
                   ) : (
                     currentUser.lastName
+                  )}
+                </p>
+                <p>
+                  <strong>Email: </strong>
+                  {editing ? (
+                    <input
+                      type="email"
+                      name="email"
+                      value={currentUser.email}
+                      onChange={this.handleChange}
+                    />
+                  ) : (
+                    currentUser.email
                   )}
                 </p>
                 <p>
@@ -165,7 +223,7 @@ export default class Profile extends Component {
                     currentUser.phoneNumber
                   )}
                 </p>
-    
+
                 <p>
                   <strong>Title: </strong>
                   {editing ? (
@@ -179,7 +237,6 @@ export default class Profile extends Component {
                     currentUser.title
                   )}
                 </p>
-
               </div>
 
               {editing ? (
@@ -197,9 +254,35 @@ export default class Profile extends Component {
                   </div>
                 </>
               ) : (
-                <button className="btnChange" onClick={this.handleEdit}>
-                  Change info
-                </button>
+                <>
+                  <div className="button-container">
+                    <button className="btnChange" onClick={this.handleEdit}>
+                      Change info
+                    </button>
+                    {fileUploaded ? (
+                      <p className="file-uploaded">
+                        File uploaded: {this.state.file.name}
+                      </p>
+                    ) : (
+                      <div className="file-container">
+                        <label htmlFor="fileUpload" className="file-label">
+                        </label>
+                        <input
+                          id="fileUpload"
+                          type="file"
+                          accept=".pdf"
+                          onChange={this.handleFileChange}
+                        />
+                        <button
+                          className="btnUpload"
+                          onClick={this.handleFileUpload}
+                        >
+                          Upload
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
               )}
             </header>
           </div>

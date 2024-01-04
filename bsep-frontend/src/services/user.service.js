@@ -5,7 +5,7 @@ const API_URL = 'https://localhost:443/api/test/';
 
 class UserService {
   getPublicContent() {
-    return axios.get(API_URL + 'all');
+    return axios.get( 'https://localhost:443/api/horder/guitars/all');
   }
 
   getUserBoard() {

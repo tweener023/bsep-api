@@ -4,10 +4,8 @@ import com.bezkoder.spring.security.postgresql.dtos.PermissionsDTO;
 import com.bezkoder.spring.security.postgresql.dtos.ProjectDTO;
 import com.bezkoder.spring.security.postgresql.dtos.SkillDTO;
 import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
-import com.bezkoder.spring.security.postgresql.models.Permissions;
-import com.bezkoder.spring.security.postgresql.models.Project;
-import com.bezkoder.spring.security.postgresql.models.Skill;
-import com.bezkoder.spring.security.postgresql.models.User;
+import com.bezkoder.spring.security.postgresql.models.*;
+import com.bezkoder.spring.security.postgresql.repository.FileRepository;
 import com.bezkoder.spring.security.postgresql.security.services.PermissionService;
 import com.bezkoder.spring.security.postgresql.security.services.ProjectService;
 import com.bezkoder.spring.security.postgresql.security.services.SkillService;
@@ -18,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +43,8 @@ public class ApiController {
 	@Autowired
 	PermissionService permissionService;
 
+	@Autowired
+	FileRepository fileRepository;
 
 	@GetMapping("/all")
 	public String allAccess() {
@@ -89,47 +91,26 @@ public class ApiController {
 	}
 
 	@GetMapping(value = "/{userId}/skill")
-@PreAuthorize("hasAnyRole('ENGINEER')")
-public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId) {
-	Long id = Long.parseLong(userId);
-	User user = userService.findOne(id);
-	if(hasReadPermission(user)){
-		Set<Skill> skills = user.getSkills();
-		List<SkillDTO> skillsDTO = new ArrayList<>();
-		for (Skill e : skills) {
+	@PreAuthorize("hasAnyRole('ENGINEER')")
+	public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId) {
+		Long id = Long.parseLong(userId);
+		User user = userService.findOne(id);
+		if(hasReadPermission(user)){
+			Set<Skill> skills = user.getSkills();
+			List<SkillDTO> skillsDTO = new ArrayList<>();
+			for (Skill e : skills) {
 
-			if(e.getIsDeleted() == false){
-				SkillDTO appointmentDTO = new SkillDTO();
-				appointmentDTO.setSkillId(e.getSkillId());
-				appointmentDTO.setSkillLevel(e.getSkillLevel());
-				appointmentDTO.setUser(new UserDTO(e.getUser()));
-				appointmentDTO.setSkillName(e.getSkillName());
+				if(e.getIsDeleted() == false){
+					SkillDTO appointmentDTO = new SkillDTO();
+					appointmentDTO.setSkillId(e.getSkillId());
+					appointmentDTO.setSkillLevel(e.getSkillLevel());
+					appointmentDTO.setUser(new UserDTO(e.getUser()));
+					appointmentDTO.setSkillName(e.getSkillName());
 
-				skillsDTO.add(appointmentDTO);
+					skillsDTO.add(appointmentDTO);
+				}
 			}
-		}
-		return new ResponseEntity<>(skillsDTO, HttpStatus.OK);
-	}
-	else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-}
-
-	@PutMapping("/{skillId}/deleteSkill")
-	public ResponseEntity<SkillDTO> deleteSkill(@PathVariable("skillId") String skillId) {
-
-		// a user must exist
-		Long id = Long.parseLong(skillId);
-		Skill skill = skillService.findOne(id);
-		User user = userService.findOne(skill.getUser().getId());
-
-		if(hasDeletePermission(user)){
-			if (skill == null) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-			skill.setIsDeleted(true);
-			skill = skillService.save(skill);
-
-			return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
-
+			return new ResponseEntity<>(skillsDTO, HttpStatus.OK);
 		}
 		else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
@@ -186,7 +167,47 @@ public ResponseEntity<List<SkillDTO>> getUserSkills(@PathVariable String userId)
 
 	}
 
+	@PostMapping("/upload")
+	public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) {
+		if (file.isEmpty()) {
+			return ResponseEntity.badRequest().body("File is required");
+		}
 
+		// Perform other validations or processing on the file as needed
+
+		// Save the file
+		try {
+			FileEntity fileEntity = new FileEntity();
+			fileEntity.setFileName(file.getOriginalFilename());
+			fileEntity.setFileData(file.getBytes());
+			fileRepository.save(fileEntity);
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload the file");
+		}
+
+		return ResponseEntity.ok("File uploaded successfully");
+	}
+
+	@PutMapping("/{skillId}/deleteSkill")
+	public ResponseEntity<SkillDTO> deleteSkill(@PathVariable("skillId") String skillId) {
+
+		// a user must exist
+		Long id = Long.parseLong(skillId);
+		Skill skill = skillService.findOne(id);
+		User user = userService.findOne(skill.getUser().getId());
+
+		if(hasDeletePermission(user)){
+			if (skill == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			skill.setIsDeleted(true);
+			skill = skillService.save(skill);
+
+			return new ResponseEntity<>(new SkillDTO(skill), HttpStatus.OK);
+
+		}
+		else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+	}
 
 	@GetMapping(value = "/{userId}/project")
 	@PreAuthorize("hasAnyRole('ENGINEER')")

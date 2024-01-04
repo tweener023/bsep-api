@@ -1,0 +1,32 @@
+/* GuitarCard.css */
+.card-container {
+    width: 18rem;
+    margin: 4px;
+  }
+  
+  .card-image {
+    height: 200px;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+  }
+  
+  .card-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+  }
+  
+  .card-price {
+    color: #dc3545;
+  }
+  
+  .card-description {
+    color: #6c757d;
+    font-style: italic;
+  }
+  
+  .card-button {
+    margin-top: 1rem;
+  }
+  
