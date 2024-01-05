@@ -13,6 +13,8 @@ import BoardUser from "./components/board-user.component";
 import BoardEngineer from "./components/board-engineer.component";
 import BoardAdmin from "./components/board-admin.component";
 import ProtectedRoute from "./components/protected-route.component";
+import BlogsComponent from "./components/blog-page.component";
+import CreateBlogsComponent from "./components/add-blog.component";
 
 class App extends Component {
   constructor(props) {
@@ -62,7 +64,12 @@ class App extends Component {
                 All Guitars
               </Link>
             </li>
-  
+            <li className="nav-item">
+              <Link to={"/blogs"} className="nav-link">
+                Blogs
+              </Link>
+            </li>
+
             {showEngineerBoard && (
               <li className="nav-item">
                 <Link to={"/engineer"} className="nav-link">
@@ -77,6 +84,13 @@ class App extends Component {
                   Admin Board
                 </Link>
               </li>
+            )
+            && (
+              <li className="nav-item">
+              <Link to={"/createBlog"} className="nav-link">
+                New Blog
+              </Link>
+            </li>
             )}
   
             {currentUser && (
@@ -128,6 +142,9 @@ class App extends Component {
             <Route path="/user" element={<BoardUser />} />
             <Route path="/engineer" element={<BoardEngineer />} />
             <Route path="/admin" element={<BoardAdmin />} />
+            <Route path="/blogs" element={<BlogsComponent />} />
+            <Route path="/createBlog" element={<CreateBlogsComponent />} />
+
           </Routes>
         </div>
   

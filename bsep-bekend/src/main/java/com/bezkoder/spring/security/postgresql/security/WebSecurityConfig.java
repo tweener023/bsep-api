@@ -95,6 +95,8 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/horder/images/{guitarId}/getTopImage").permitAll() // Allow unauthenticated
                 .antMatchers("/api/horder/images/{guitarId}/getAllPhotos").permitAll() // Allow unauthenticate
                 .antMatchers("/api/horder/guitars/{guitarId}").permitAll() // Allow unauthenticated
+                .antMatchers("/api/blogs").permitAll() // Allow unauthenticated
+
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
