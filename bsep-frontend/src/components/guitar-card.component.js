@@ -19,6 +19,8 @@ const GuitarCard = ({ guitar }) => {
       .catch((error) => console.error('Error fetching guitar photo:', error));
   }, [guitar.id]);
 
+  const isAdmin = guitar.user && guitar.user.id === 1;
+
   return (
     <div className="card bg-white rounded-lg shadow-lg overflow-hidden card-container">
       <div className="position-relative card-image" style={{ height: '200px', overflow: 'hidden' }}>
@@ -37,12 +39,21 @@ const GuitarCard = ({ guitar }) => {
         <h2 className="card-price text-danger">{guitar.price}</h2>
 
         <p className="card-description font-italic">{guitar.description}</p>
-        <button
-          className="btn btn-primary card-button w-100"
-          onClick={() => setShowGallery(true)} // Open the gallery on button click
-        >
-          See More
-        </button>
+        {isAdmin ? (
+          <button
+            className="btn btn-primary card-button w-100"
+            onClick={() => setShowGallery(true)}
+          >
+            See More
+          </button>
+        ) : (
+          <button
+            className="btn btn-secondary card-button w-100"
+            disabled
+          >
+            Out of Stock
+          </button>
+        )}
 
         {/* Conditionally render the GalleryModal component */}
         {showGallery && (

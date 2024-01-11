@@ -46,25 +46,25 @@ insert into permissions (can_create, can_read, can_update, can_delete, user_id) 
 insert into permissions (can_create, can_read, can_update, can_delete, user_id) values ('false','true','false','false', 7);
 
 -- Insert Fender guitar data
- insert into guitars (manufacturer_of_guitar, model_of_guitar,price, year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description) values ('Fender', 'Stratocaster', 89999,2020, 'KAO_NOVO', 'ELEKTRICNA', 'HSS', 'Standard Tuners', 'Maple', 'A versatile electric guitar.');
+ insert into guitars (manufacturer_of_guitar, model_of_guitar,price, year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('Fender', 'Stratocaster', 89999,2020, 'KAO_NOVO', 'ELEKTRICNA', 'HSS', 'Standard Tuners', 'Maple', 'A versatile electric guitar.', 1);
 
 -- Insert Gibson guitar data
-insert into guitars (manufacturer_of_guitar, model_of_guitar,price, year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description) values ('Gibson', 'Les Paul',234999, 1995, 'DOBRO', 'ELEKTRICNA', 'SINGL_KOIL', 'Grover Rotomatics', 'Mahogany', 'Classic rock electric guitar.');
+insert into guitars (manufacturer_of_guitar, model_of_guitar,price, year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('Gibson', 'Les Paul',234999, 1995, 'DOBRO', 'ELEKTRICNA', 'SINGL_KOIL', 'Grover Rotomatics', 'Mahogany', 'Classic rock electric guitar.', 1);
 
 -- Insert Taylor guitar data
-insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description) values ('Taylor', '214ce', 145000,2018, 'NOVO', 'AKUSTICNA', 'PIEZO', 'Taylor Chrome', 'Spruce', 'High-quality acoustic guitar.');
+insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('Taylor', '214ce', 145000,2018, 'NOVO', 'AKUSTICNA', 'PIEZO', 'Taylor Chrome', 'Spruce', 'High-quality acoustic guitar.', 1);
 
 -- Insert Ibanez guitar data
-insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description) values ('Ibanez', 'RG550',34999, 2015, 'KAO_NOVO', 'ELEKTRICNA', 'HSS', 'Ibanez Tuners', 'Mahogany', 'Versatile electric guitar with a sleek design.');
+insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('Ibanez', 'RG550',34999, 2015, 'KAO_NOVO', 'ELEKTRICNA', 'HSS', 'Ibanez Tuners', 'Mahogany', 'Versatile electric guitar with a sleek design.', 1);
 
 -- Insert Martin guitar data
-insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description) values ('Martin', 'D-28',349000, 2022, 'NOVO', 'AKUSTICNA', 'PIEZO', 'Martin Deluxe', 'Rosewood', 'High-quality acoustic guitar with rich tones.');
+insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('Martin', 'D-28',349000, 2022, 'NOVO', 'AKUSTICNA', 'PIEZO', 'Martin Deluxe', 'Rosewood', 'High-quality acoustic guitar with rich tones.', 1);
 
 -- Insert PRS guitar data
-insert into guitars (manufacturer_of_guitar, model_of_guitar,price, year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description) values ('PRS', 'Custom 24', 123000,2019, 'KAO_NOVO', 'ELEKTRICNA', 'HAMBAKERI', 'PRS Phase III', 'Maple', 'Premium electric guitar with a unique design.');
+insert into guitars (manufacturer_of_guitar, model_of_guitar,price, year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('PRS', 'Custom 24', 123000,2019, 'KAO_NOVO', 'ELEKTRICNA', 'HAMBAKERI', 'PRS Phase III', 'Maple', 'Premium electric guitar with a unique design.', 1);
 
 -- Insert Epiphone guitar data
-insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description) values ('Epiphone', 'Les Paul Standard', 23000,2021, 'KAO_NOVO', 'ELEKTRICNA', 'HAMBAKERI', 'Epiphone Deluxe', 'Mahogany', 'Affordable electric guitar with classic tones.');
+insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('Epiphone', 'Les Paul Standard', 23000,2021, 'KAO_NOVO', 'ELEKTRICNA', 'HAMBAKERI', 'Epiphone Deluxe', 'Mahogany', 'Affordable electric guitar with classic tones.', 1);
 
 insert into image_table (url_path, guitar_id) values ('https://horder-bucket.s3.eu-north-1.amazonaws.com/top-images/fender_stratocaster.jpg', 1);
 insert into image_table (url_path, guitar_id) values ('https://horder-bucket.s3.eu-north-1.amazonaws.com/top-images/gibson_les_paul.jpg', 2);

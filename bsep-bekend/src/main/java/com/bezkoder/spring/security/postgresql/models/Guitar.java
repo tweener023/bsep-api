@@ -54,6 +54,10 @@ public class Guitar {
     @JsonIgnore
     private Set<Image> images = new HashSet<Image>();
 
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private User user;
+
 
     public Long getId() {
         return id;
@@ -149,5 +153,14 @@ public class Guitar {
 
     public void setImages(Set<Image> images) {
         this.images = images;
+    }
+
+    public User getUser() {
+
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
