@@ -19,7 +19,7 @@ const GuitarCard = ({ guitar }) => {
       .catch((error) => console.error('Error fetching guitar photo:', error));
   }, [guitar.id]);
 
-  const isAdmin = guitar.user && guitar.user.id === 1;
+  const isAdmin = guitar.userId && guitar.userId === 1;
 
   return (
     <div className="card bg-white rounded-lg shadow-lg overflow-hidden card-container">

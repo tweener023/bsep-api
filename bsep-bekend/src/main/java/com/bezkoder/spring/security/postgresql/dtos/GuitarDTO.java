@@ -19,6 +19,7 @@ public class GuitarDTO {
     private String tuners;
     private String typeOfWood;
     private String description;
+    private Long userId;
 
 
     public GuitarDTO(){
@@ -125,5 +126,13 @@ public class GuitarDTO {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

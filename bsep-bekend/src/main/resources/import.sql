@@ -64,7 +64,7 @@ insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_prod
 insert into guitars (manufacturer_of_guitar, model_of_guitar,price, year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('PRS', 'Custom 24', 123000,2019, 'KAO_NOVO', 'ELEKTRICNA', 'HAMBAKERI', 'PRS Phase III', 'Maple', 'Premium electric guitar with a unique design.', 1);
 
 -- Insert Epiphone guitar data
-insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('Epiphone', 'Les Paul Standard', 23000,2021, 'KAO_NOVO', 'ELEKTRICNA', 'HAMBAKERI', 'Epiphone Deluxe', 'Mahogany', 'Affordable electric guitar with classic tones.', 1);
+insert into guitars (manufacturer_of_guitar, model_of_guitar, price,year_of_production, state_of_guitar, type_of_guitar, type_of_magnets, tuners, type_of_wood, description, user_id) values ('Epiphone', 'Les Paul Standard', 23000,2021, 'KAO_NOVO', 'ELEKTRICNA', 'HAMBAKERI', 'Epiphone Deluxe', 'Mahogany', 'Affordable electric guitar with classic tones.', 2);
 
 insert into image_table (url_path, guitar_id) values ('https://horder-bucket.s3.eu-north-1.amazonaws.com/top-images/fender_stratocaster.jpg', 1);
 insert into image_table (url_path, guitar_id) values ('https://horder-bucket.s3.eu-north-1.amazonaws.com/top-images/gibson_les_paul.jpg', 2);
