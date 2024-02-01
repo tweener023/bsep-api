@@ -3,7 +3,7 @@ import { useState } from 'react';
 import AuthService from "../services/auth.service";
 import '../styles/GuitarInfoStyles.css'; 
 
-const GuitarInfo = ({ guitar }) => {
+const GuitarInfo = ({ guitar, onClose, onOrder }) => {
   
    const getCurrentUser = () => {
     return JSON.parse(localStorage.getItem('user'));
@@ -17,7 +17,6 @@ const GuitarInfo = ({ guitar }) => {
  
    const getJwt = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log('User object:', user); // Log the user object
     return user ? user.accessToken : null;
   };
 
@@ -25,34 +24,23 @@ const GuitarInfo = ({ guitar }) => {
     const guitarId = guitar.id;
     const userId = JSON.parse(localStorage.getItem("user")).id;
   
-    // Get JWT token
     const jwtToken = getJwt();
-    console.log('JWT Token:', jwtToken); // Log the JWT token
-  
-    // Log request details
-    console.log('Request URL:', `https://localhost:443/api/order/guitars/order/${guitarId}/user/${userId}`);
-    console.log('Request Headers:', {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${jwtToken}`
-    });
-  
-    // Send request with JWT token
+
     fetch(`https://localhost:443/api/horder/guitars/order/${guitarId}/user/${userId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwtToken}` // Use locally defined getJwt function
+        'Authorization': `Bearer ${jwtToken}` 
       },
     })
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      // Handle success response
       console.log('Guitar ordered successfully!');
+      onOrder();
     })
     .catch(error => {
-      // Handle error
       console.error('There was a problem ordering the guitar:', error);
     });
   };

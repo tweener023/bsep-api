@@ -2,7 +2,10 @@ package com.bezkoder.spring.security.postgresql.controllers;
 
 
 import com.bezkoder.spring.security.postgresql.dtos.GuitarDTO;
+import com.bezkoder.spring.security.postgresql.dtos.SkillDTO;
+import com.bezkoder.spring.security.postgresql.dtos.UserDTO;
 import com.bezkoder.spring.security.postgresql.models.Guitar;
+import com.bezkoder.spring.security.postgresql.models.Skill;
 import com.bezkoder.spring.security.postgresql.models.User;
 import com.bezkoder.spring.security.postgresql.security.services.GuitarService;
 import com.bezkoder.spring.security.postgresql.security.services.UserDetailsServiceImpl;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -77,7 +81,6 @@ public class GuitarController {
                     Guitar guitar = optionalGuitar.get();
                     User user = optionalUser.get();
 
-                    // Update the user associated with the guitar
                     guitar.setUser(user);
                     guitarService.save(guitar);
 
@@ -93,5 +96,32 @@ public class GuitarController {
         }
     }
 
+    @GetMapping(value = "/{userId}/orders")
+    public ResponseEntity<List<GuitarDTO>> getUserOrders(@PathVariable String userId) {
+        Long id = Long.parseLong(userId);
+        User user = userService.findOne(id);
+            Set<Guitar> guitars = user.getGuitars();
+            List<GuitarDTO> guitarsDTO = new ArrayList<>();
+            for (Guitar g : guitars) {
+                 GuitarDTO guitarDTO = new GuitarDTO();
 
+                guitarDTO.setId(g.getId());
+                guitarDTO.setManufacturerOfGuitar(g.getManufacturerOfGuitar());
+                guitarDTO.setModelOfGuitar(g.getModelOfGuitar());
+                guitarDTO.setYearOfProduction(g.getYearOfProduction());
+                guitarDTO.setPrice(g.getPrice());
+                guitarDTO.setStateOfGuitar(g.getStateOfGuitar());
+                guitarDTO.setTypeOfGuitar(g.getTypeOfGuitar());
+                guitarDTO.setTypeOfMagnets(g.getTypeOfMagnets());
+                guitarDTO.setTuners(g.getTuners());
+                guitarDTO.setTypeOfWood(g.getTypeOfWood());
+                guitarDTO.setDescription(g.getDescription());
+                guitarDTO.setUserId(g.getUser().getId());
+
+
+                guitarsDTO.add(guitarDTO);
+
+            }
+            return new ResponseEntity<>(guitarsDTO, HttpStatus.OK);
+        }
 }

@@ -5,10 +5,11 @@ import '../styles/GalleryStyles.css';
 
 import {api_url} from '../common/environment';
 
-const GalleryModal = ({ guitarId, onClose }) => {
+const GalleryModal = ({ guitarId, onClose, onOrder }) => {
   const [images, setImages] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [guitarInfo, setGuitarInfo] = useState(null);
+  const [ordered, setOrdered] = useState(false); // Track whether guitar is ordered
 
 
   useEffect(() => {
@@ -30,6 +31,13 @@ const GalleryModal = ({ guitarId, onClose }) => {
   const closeImage = () => {
     setSelectedImageIndex(null);
   };
+  const handleOrder = () => {
+    setOrdered(true); 
+    onOrder();
+    onClose();
+    window.location.reload(); // Reload the page
+  };
+
   return (
     <div className="modal d-block" tabIndex="-1" role="dialog" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
       <div className="modal-dialog" role="document">
@@ -43,7 +51,7 @@ const GalleryModal = ({ guitarId, onClose }) => {
             <div className="d-flex justify-content-center align-items-center">
               <ImageGallery images={images} onImageClick={openImage} />
             </div>
-            {guitarInfo && <GuitarInfo guitar={guitarInfo} />} 
+            {guitarInfo && <GuitarInfo guitar={guitarInfo}  onOrder={() => handleOrder()} />} 
           </div>
         </div>
       </div>

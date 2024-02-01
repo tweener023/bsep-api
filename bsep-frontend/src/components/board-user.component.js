@@ -1,46 +1,79 @@
 import React, { Component } from "react";
-
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
+import '../styles/UserOrders.css'
 
 export default class BoardUser extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      content: ""
+      orders: [],
+      error: ""
     };
   }
 
   componentDidMount() {
-    UserService.getUserBoard().then(
-      response => {
+    const userId = JSON.parse(localStorage.getItem("user")).id;
+    const accessToken = this.getJwt();
+
+    UserService.getUserOrders(userId, accessToken)
+      .then(response => {
         this.setState({
-          content: response.data
+          orders: response.data
         });
-      },
-      error => {
+      })
+      .catch(error => {
+        const errorMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
         this.setState({
-          content:
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString()
+          error: errorMessage
         });
 
         if (error.response && error.response.status === 401) {
           EventBus.dispatch("logout");
         }
-      }
-    );
+      });
   }
 
+  getJwt = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    return user ? user.accessToken : null;
+  };
+
   render() {
+    const { orders, error } = this.state;
+  
     return (
       <div className="container">
         <header className="jumbotron">
-          <h3>{this.state.content}</h3>
+          <h3>My Orders</h3>
+          {error ? (
+            <div className="error">Error: {error}</div>
+          ) : (
+            <div>
+              {orders.map(order => (
+                <div key={order.id} className="order-container">
+                  <h4 className="order-heading">{order.manufacturerOfGuitar} - {order.modelOfGuitar}</h4>
+                  <div className="order-info">
+                    <div>Year: {order.yearOfProduction}</div>
+                    <div>Price: {order.price}</div>
+                    <div>State: {order.stateOfGuitar}</div>
+                    <div>Type: {order.typeOfGuitar}</div>
+                    <div>Magnets: {order.typeOfMagnets}</div>
+                    <div>Tuners: {order.tuners}</div>
+                    <div>Wood: {order.typeOfWood}</div>
+                    <div>Description: {order.description}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </header>
       </div>
     );

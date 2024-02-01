@@ -16,16 +16,21 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
+   this.fetchGuitars();
+  }
+
+  fetchGuitars() {
     fetch("https://localhost:443/api/horder/guitars/all")
       .then(response => response.json())
       .then(data => {
         this.setState({
           guitars: data,
-          filteredGuitars: data, // Initialize filteredGuitars with all guitars
+          filteredGuitars: data,
         });
       })
       .catch(error => console.error("Error fetching guitars:", error));
   }
+
 
   handleSearchChange = (event) => {
     const searchQuery = event.target.value.toLowerCase();
@@ -41,6 +46,12 @@ export default class Home extends Component {
     const maxPrice = event.target.value;
     this.setState({ maxPrice }, this.filterGuitars);
   };
+
+  handleOnOrderRefresh = () => {
+    console.log("refetch and refresh state here");
+    this.fetchGuitars();
+    window.location.reload(); // Reload the page
+  }
 
   filterGuitars = () => {
     const { guitars, searchQuery, minPrice, maxPrice } = this.state;
@@ -104,7 +115,7 @@ export default class Home extends Component {
 
           {filteredGuitars.map(guitar => (
             <div key={guitar.id} className="col-md-4">
-              <GuitarCard guitar={guitar} />
+              <GuitarCard guitar={guitar} onOrderRefresh={this.handleOnOrderRefresh}/>
             </div>
           ))}
         </div>

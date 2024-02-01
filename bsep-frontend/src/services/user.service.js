@@ -88,6 +88,15 @@ class UserService {
     return axios.put(API_URL + userId + '/editUser', updatedUser,{headers: authHeader()});
   }
 
+  getUserOrders(userId, accessToken) {
+    console.log("this is users id " + userId);
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
+
+    return axios.get(`https://localhost:443/api/horder/guitars/${userId}/orders`, { headers });
+  }
+
 }
 
 export default new UserService();

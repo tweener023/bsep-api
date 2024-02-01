@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import GalleryModal from './gallery-modal.component';
 
 
-const GuitarCard = ({ guitar }) => {
+const GuitarCard = ({ guitar, onOrderRefresh}) => {
   const [guitarPhotoUrl, setGuitarPhotoUrl] = useState(null);
   const [showGallery, setShowGallery] = useState(false);
+  const [ordered, setOrdered] = useState(false); 
+
 
   useEffect(() => {
     // Fetch guitar photo URL from your backend API
@@ -20,6 +22,15 @@ const GuitarCard = ({ guitar }) => {
   }, [guitar.id]);
 
   const isAdmin = guitar.userId && guitar.userId === 1;
+
+  const handleOrder = () => {
+    setOrdered(true); 
+    setShowGallery(false);
+    onOrderRefresh();
+    window.location.reload(); // Reload the page
+
+  };
+
 
   return (
     <div className="card bg-white rounded-lg shadow-lg overflow-hidden card-container">
@@ -60,6 +71,7 @@ const GuitarCard = ({ guitar }) => {
           <GalleryModal
             guitarId={guitar.id}
             onClose={() => setShowGallery(false)} // Close the gallery
+            onOrder={() => handleOrder()} // Pass the callback function
           />
         )}
       </div>
