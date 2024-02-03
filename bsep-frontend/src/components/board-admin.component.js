@@ -133,34 +133,7 @@ export default class BoardAdmin extends Component {
                     >
                       Activate
                     </button>
-                    {this.state.activatedProfiles.includes(profile.id) ? (
-                      <button
-                        className="btn btn-danger"
-                        onClick={() =>
-                          this.unauthorize(
-                            profile.id,
-                            AuthService.getCurrentUser().accessToken
-                          )
-                        }
-                      >
-                        Unauthorize
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-success"
-                        onClick={() =>
-                          this.giveCrudPermissions(
-                            profile.id,
-                            AuthService.getCurrentUser().accessToken
-                          )
-                        }
-                        disabled={this.state.activatedProfiles.includes(
-                          profile.id
-                        )}
-                      >
-                        Authorize
-                      </button>
-                    )}
+                   
                   </td>
                 </tr>
               ))}

@@ -96,10 +96,10 @@ class App extends Component {
             </li>
             )
           }
-            {currentUser && (
+            {currentUser && !showAdminBoard &&(
               <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
-                  User
+                  My orders
                 </Link>
               </li>
             )}

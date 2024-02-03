@@ -49,8 +49,9 @@ export default class Home extends Component {
 
   handleOnOrderRefresh = () => {
     console.log("refetch and refresh state here");
+    
     this.fetchGuitars();
-    window.location.reload(); // Reload the page
+    window.location.reload(); 
   }
 
   filterGuitars = () => {

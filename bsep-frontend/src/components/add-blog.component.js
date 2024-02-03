@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import styles from '../styles/CreateBlogs.module.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import styles from '../styles/CreateBlogs.module.css';
 
 const CreateBlogsComponent = () => {
   const [formData, setFormData] = useState({
@@ -31,8 +33,29 @@ const CreateBlogsComponent = () => {
       .then(data => {
         // Handle successful blog creation if needed
         console.log('Blog created successfully:', data);
+        toast.success('Blog created successfully.', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setFormData({ title: '', content: '' }); // Clear input data
       })
-      .catch(error => console.error('Error creating blog:', error));
+      .catch(error => {
+        console.error('Error creating blog:', error);
+        toast.error('Error creating blog.', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
  
   return (
@@ -67,7 +90,9 @@ const CreateBlogsComponent = () => {
           <button type="submit" className={styles.createBlogsButton}>Submit</button>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
+
 export default CreateBlogsComponent;

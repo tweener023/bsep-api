@@ -50,17 +50,17 @@ export default class BoardUser extends Component {
     const { orders, error } = this.state;
   
     return (
-      <div className="container">
-        <header className="jumbotron">
-          <h3>My Orders</h3>
+      <div className="board-user-container">
+        <header className="board-user-jumbotron">
+          <h3 className="board-user-h3">My Orders</h3>
           {error ? (
-            <div className="error">Error: {error}</div>
+            <div className="board-user-error">Error: {error}</div>
           ) : (
             <div>
               {orders.map(order => (
-                <div key={order.id} className="order-container">
-                  <h4 className="order-heading">{order.manufacturerOfGuitar} - {order.modelOfGuitar}</h4>
-                  <div className="order-info">
+                <div key={order.id} className="board-user-order-container">
+                  <h4 className="board-user-order-heading">{order.manufacturerOfGuitar} - {order.modelOfGuitar}</h4>
+                  <div className="board-user-order-info">
                     <div>Year: {order.yearOfProduction}</div>
                     <div>Price: {order.price}</div>
                     <div>State: {order.stateOfGuitar}</div>
