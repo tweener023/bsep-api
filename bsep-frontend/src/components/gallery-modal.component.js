@@ -9,7 +9,7 @@ const GalleryModal = ({ guitarId, onClose, onOrder }) => {
   const [images, setImages] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [guitarInfo, setGuitarInfo] = useState(null);
-  const [ordered, setOrdered] = useState(false); // Track whether guitar is ordered
+  const [ordered, setOrdered] = useState(false); 
 
 
   useEffect(() => {
@@ -35,7 +35,6 @@ const GalleryModal = ({ guitarId, onClose, onOrder }) => {
     setOrdered(true); 
     onOrder();
     onClose();
-    window.location.reload(); // Reload the page
   };
 
   return (

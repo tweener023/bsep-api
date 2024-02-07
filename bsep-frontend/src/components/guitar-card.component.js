@@ -1,4 +1,3 @@
-// GuitarCard.js
 import React, { useState, useEffect } from 'react';
 import GalleryModal from './gallery-modal.component';
 
@@ -10,11 +9,9 @@ const GuitarCard = ({ guitar, onOrderRefresh}) => {
 
 
   useEffect(() => {
-    // Fetch guitar photo URL from your backend API
     fetch(`https://localhost:443/api/horder/images/${guitar.id}/getTopImage`)
       .then((response) => response.json())
       .then((data) => {
-        // Extract the URL from the response
         const photoUrl = data.urlPath;
         setGuitarPhotoUrl(photoUrl);
       })
@@ -27,7 +24,6 @@ const GuitarCard = ({ guitar, onOrderRefresh}) => {
     setOrdered(true); 
     setShowGallery(false);
     onOrderRefresh();
-    window.location.reload(); // Reload the page
 
   };
 
@@ -66,12 +62,11 @@ const GuitarCard = ({ guitar, onOrderRefresh}) => {
           </button>
         )}
 
-        {/* Conditionally render the GalleryModal component */}
         {showGallery && (
           <GalleryModal
             guitarId={guitar.id}
-            onClose={() => setShowGallery(false)} // Close the gallery
-            onOrder={() => handleOrder()} // Pass the callback function
+            onClose={() => setShowGallery(false)} 
+            onOrder={() => handleOrder()} 
           />
         )}
       </div>

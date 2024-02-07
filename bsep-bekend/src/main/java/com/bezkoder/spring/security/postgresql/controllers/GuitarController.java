@@ -37,25 +37,25 @@ public class GuitarController {
     @GetMapping(value = "/all")
     @PreAuthorize("permitAll()")
     public ResponseEntity<List<GuitarDTO>> getAllGuitars() {
-            List<GuitarDTO> guitarsDTO = new ArrayList<>();
-            List<Guitar> guitars = guitarService.findAll();
-            for (Guitar g : guitars) {
-                    GuitarDTO guitarDTO = new GuitarDTO();
+        List<GuitarDTO> guitarsDTO = new ArrayList<>();
+        List<Guitar> guitars = guitarService.findAll();
+        for (Guitar g : guitars) {
+            GuitarDTO guitarDTO = new GuitarDTO();
 
-                    guitarDTO.setId(g.getId());
-                    guitarDTO.setManufacturerOfGuitar(g.getManufacturerOfGuitar());
-                    guitarDTO.setModelOfGuitar(g.getModelOfGuitar());
-                    guitarDTO.setYearOfProduction(g.getYearOfProduction());
-                    guitarDTO.setPrice(g.getPrice());
-                    guitarDTO.setStateOfGuitar(g.getStateOfGuitar());
-                    guitarDTO.setTypeOfGuitar(g.getTypeOfGuitar());
-                    guitarDTO.setTypeOfMagnets(g.getTypeOfMagnets());
-                    guitarDTO.setTuners(g.getTuners());
-                    guitarDTO.setTypeOfWood(g.getTypeOfWood());
-                    guitarDTO.setDescription(g.getDescription());
-                    guitarDTO.setUserId(g.getUser().getId());
+            guitarDTO.setId(g.getId());
+            guitarDTO.setManufacturerOfGuitar(g.getManufacturerOfGuitar());
+            guitarDTO.setModelOfGuitar(g.getModelOfGuitar());
+            guitarDTO.setYearOfProduction(g.getYearOfProduction());
+            guitarDTO.setPrice(g.getPrice());
+            guitarDTO.setStateOfGuitar(g.getStateOfGuitar());
+            guitarDTO.setTypeOfGuitar(g.getTypeOfGuitar());
+            guitarDTO.setTypeOfMagnets(g.getTypeOfMagnets());
+            guitarDTO.setTuners(g.getTuners());
+            guitarDTO.setTypeOfWood(g.getTypeOfWood());
+            guitarDTO.setDescription(g.getDescription());
+            guitarDTO.setUserId(g.getUser().getId());
 
-                    guitarsDTO.add(guitarDTO);
+            guitarsDTO.add(guitarDTO);
         }
         return new ResponseEntity<>(guitarsDTO, HttpStatus.OK);
     }
@@ -100,28 +100,59 @@ public class GuitarController {
     public ResponseEntity<List<GuitarDTO>> getUserOrders(@PathVariable String userId) {
         Long id = Long.parseLong(userId);
         User user = userService.findOne(id);
-            Set<Guitar> guitars = user.getGuitars();
-            List<GuitarDTO> guitarsDTO = new ArrayList<>();
-            for (Guitar g : guitars) {
-                 GuitarDTO guitarDTO = new GuitarDTO();
+        Set<Guitar> guitars = user.getGuitars();
+        List<GuitarDTO> guitarsDTO = new ArrayList<>();
+        for (Guitar g : guitars) {
+            GuitarDTO guitarDTO = new GuitarDTO();
 
-                guitarDTO.setId(g.getId());
-                guitarDTO.setManufacturerOfGuitar(g.getManufacturerOfGuitar());
-                guitarDTO.setModelOfGuitar(g.getModelOfGuitar());
-                guitarDTO.setYearOfProduction(g.getYearOfProduction());
-                guitarDTO.setPrice(g.getPrice());
-                guitarDTO.setStateOfGuitar(g.getStateOfGuitar());
-                guitarDTO.setTypeOfGuitar(g.getTypeOfGuitar());
-                guitarDTO.setTypeOfMagnets(g.getTypeOfMagnets());
-                guitarDTO.setTuners(g.getTuners());
-                guitarDTO.setTypeOfWood(g.getTypeOfWood());
-                guitarDTO.setDescription(g.getDescription());
-                guitarDTO.setUserId(g.getUser().getId());
+            guitarDTO.setId(g.getId());
+            guitarDTO.setManufacturerOfGuitar(g.getManufacturerOfGuitar());
+            guitarDTO.setModelOfGuitar(g.getModelOfGuitar());
+            guitarDTO.setYearOfProduction(g.getYearOfProduction());
+            guitarDTO.setPrice(g.getPrice());
+            guitarDTO.setStateOfGuitar(g.getStateOfGuitar());
+            guitarDTO.setTypeOfGuitar(g.getTypeOfGuitar());
+            guitarDTO.setTypeOfMagnets(g.getTypeOfMagnets());
+            guitarDTO.setTuners(g.getTuners());
+            guitarDTO.setTypeOfWood(g.getTypeOfWood());
+            guitarDTO.setDescription(g.getDescription());
+            guitarDTO.setUserId(g.getUser().getId());
 
 
-                guitarsDTO.add(guitarDTO);
+            guitarsDTO.add(guitarDTO);
 
-            }
-            return new ResponseEntity<>(guitarsDTO, HttpStatus.OK);
         }
+        return new ResponseEntity<>(guitarsDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/{userId}/addGuitar")
+    public ResponseEntity<GuitarDTO> addGuitar(@PathVariable("userId") String userId, @RequestBody GuitarDTO g) {
+
+        Long id = Long.parseLong(userId);
+        User user = userService.findOne(id);
+
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Guitar newGuitar = new Guitar();
+        newGuitar.setId(g.getId());
+        newGuitar.setManufacturerOfGuitar(g.getManufacturerOfGuitar());
+        newGuitar.setModelOfGuitar(g.getModelOfGuitar());
+        newGuitar.setYearOfProduction(g.getYearOfProduction());
+        newGuitar.setPrice(g.getPrice());
+        newGuitar.setStateOfGuitar(g.getStateOfGuitar());
+        newGuitar.setTypeOfGuitar(g.getTypeOfGuitar());
+        newGuitar.setTypeOfMagnets(g.getTypeOfMagnets());
+        newGuitar.setTuners(g.getTuners());
+        newGuitar.setTypeOfWood(g.getTypeOfWood());
+        newGuitar.setDescription(g.getDescription());
+
+        newGuitar.setUser(user);
+
+        newGuitar = guitarService.save(newGuitar);
+        return new ResponseEntity<>(new GuitarDTO(newGuitar), HttpStatus.CREATED);
+
+    }
 }

@@ -51,7 +51,7 @@ export default class Home extends Component {
     console.log("refetch and refresh state here");
     
     this.fetchGuitars();
-    window.location.reload(); 
+    //window.location.reload(); 
   }
 
   filterGuitars = () => {
