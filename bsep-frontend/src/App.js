@@ -15,6 +15,7 @@ import BoardAdmin from "./components/board-admin.component";
 import ProtectedRoute from "./components/protected-route.component";
 import BlogsComponent from "./components/blog-page.component";
 import CreateBlogsComponent from "./components/add-blog.component";
+import CreateGuitarForm from "./components/add-guitar.component";
 
 class App extends Component {
   constructor(props) {
@@ -96,6 +97,15 @@ class App extends Component {
             </li>
             )
           }
+          {
+            showAdminBoard && (
+              <li className="nav-item">
+              <Link to={"/createGuitar"} className="nav-link">
+                New Guitar
+              </Link>
+            </li>
+            )
+          }
             {currentUser && !showAdminBoard &&(
               <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
@@ -147,6 +157,7 @@ class App extends Component {
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/blogs" element={<BlogsComponent />} />
             <Route path="/createBlog" element={<CreateBlogsComponent />} />
+            <Route path="/createGuitar" element={<CreateGuitarForm />} />
 
           </Routes>
         </div>

@@ -1,0 +1,74 @@
+/* styles.css */
+
+.create-guitar-form-container {
+    font-family: Arial, sans-serif;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.create-guitar-form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.create-guitar-form-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.create-guitar-form-container input[type="text"],
+.create-guitar-form-container input[type="number"],
+.create-guitar-form-container select,
+.create-guitar-form-container textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.create-guitar-form-container select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('data:image/svg+xml;utf8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18l-6-6h12l-6 6z" fill="#000"/></svg>') no-repeat right 10px center/10px 10px;
+}
+
+.create-guitar-form-container textarea {
+    resize: vertical;
+}
+
+.create-guitar-form-container button {
+    width: 100%;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.create-guitar-form-container button:hover {
+    background-color: #45a049;
+}
+
+.create-guitar-form-container button:active {
+    background-color: #3e8e41;
+}
+
+.error {
+    color: red;
+    font-size: smaller;
+    font-style: italic;
+  }
+
+  button[disabled] {
+    background-color: grey;
+    color: white; /* Change text color to white for better visibility */
+    cursor: not-allowed; /* Change cursor to not-allowed when disabled */
+  }
